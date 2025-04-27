@@ -12,6 +12,8 @@
 
     <!-- Màu xanh lá cho nút “Đặt vé” -->
     <color name="bhd_green">#7ED957</color>
+    <color name="green">#00FF00</color>
+
 
     <!-- Màu đỏ dành cho tag tuổi T13 -->
     <color name="age_tag_red">#E53935</color>

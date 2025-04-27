@@ -1,7 +1,9 @@
 package com.example.cinemaapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -16,6 +18,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.cinemaapp.fragment.HomeFragment;
+import com.example.cinemaapp.fragment.ScheduleFragment;
+import com.example.cinemaapp.fragment.UserInfoActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -24,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     BottomNavigationView bottomNavigationView;
+    private long backPressedTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,29 +52,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
-
             int itemId = item.getItemId();
 
             if (itemId == R.id.nav_home) {
-                selectedFragment = new HomeFragment();
-//            } else if (itemId == R.id.nav_schedule) {
-//                selectedFragment = new ScheduleFragment();
-//            } else if (itemId == R.id.nav_store) {
-//                selectedFragment = new StoreFragment();
-//            } else if (itemId == R.id.nav_profile) {
-//                selectedFragment = new ProfileFragment();
-            }
-
-            if (selectedFragment != null) {
+                Fragment selectedFragment = new HomeFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, selectedFragment)
                         .commit();
+                return true;
+            } else if( itemId == R.id.nav_schedule){
+                Fragment selectedFragment = new ScheduleFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, selectedFragment)
+                        .commit();
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                Intent intent = new Intent(MainActivity.this, UserInfoActivity.class);
+                startActivity(intent);
+                return true;
             }
 
-            return true;
+            return false;
         });
-
 
         // Mặc định vào HomeFragment
         if (savedInstanceState == null) {
@@ -84,12 +88,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.
+                START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            if (currentFragment instanceof HomeFragment) {
+                if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                    finishAffinity(); // Đóng tất cả Activity và thoát ứng dụng
+                    System.exit(0); // Đảm bảo tiến trình dừng hoàn toàn
+                } else {
+                    Toast.makeText(this, "Nhấn back lần nữa để thoát", Toast.LENGTH_SHORT).show();
+                }
+                backPressedTime = System.currentTimeMillis();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
+
+
 }
