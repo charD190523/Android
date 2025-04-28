@@ -57,7 +57,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             GeneralResponse<String> generalResponse = response.body();
                         if (generalResponse != null) {
-                            Toast.makeText(LoginActivity.this, generalResponse.getData(), Toast.LENGTH_SHORT).show();
+                            String token = generalResponse.getData();
+                            saveToken(token);
+                            Toast.makeText(LoginActivity.this, "Login Succesfully!", Toast.LENGTH_SHORT).show();
                         }
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -69,6 +71,12 @@ public class LoginActivity extends AppCompatActivity {
                     public void onFailure(retrofit2.Call<GeneralResponse<String>> call, Throwable t) {
                         Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
                         }
+                    private void saveToken(String token) {
+                        getSharedPreferences("APP_PREFS", MODE_PRIVATE)
+                                .edit()
+                                .putString("jwt_token", token)
+                                .apply();
+                    }
                 });
             }
         });

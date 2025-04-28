@@ -1,5 +1,6 @@
 package com.example.cinemaapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -30,10 +31,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BottomNavigationView bottomNavigationView;
     private long backPressedTime = 0;
 
+    public static Context appContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+
+        // Gán context cho biến toàn cuc
+        appContext = getApplicationContext();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
