@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarChonGhe"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#000000"
+        android:theme="?attr/actionBarTheme">
+
+        <ImageView
+            android:id="@+id/btnBackChonGhe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            app:tint="#FFFFFF"
+            android:layout_gravity="start|center_vertical"
+            android:paddingEnd="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Chọn đồ ăn và nước uống"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTimerDatDoAn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="07:00"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:layout_gravity="end|center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvTenRapDatDoAn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[Tên Rạp]"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/tvNgayChieuDatDoAn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[Ngày Chiếu]"
+                android:textColor="#AAAAAA"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/tvGioChieuDatDoAn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[Giờ Chiếu]"
+                android:textColor="#AAAAAA"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal"
+                android:text="Đồ ăn &amp; Nước uống"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/layoutDanhSachCombo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imgCombo1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ol_combo_single"
+                        android:layout_marginEnd="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvTenCombo1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OL Combo Single\nSweet 32oz - Pepsi 22oz"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvMoTaCombo1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="01 bắp nhỏ vị ngọt + 01 ly nước 22oz. Nhận trong ngày xem phim. (Chưa bao gồm phụ thu vị bắp)"
+                            android:textColor="#AAAAAA"
+                            android:textSize="12sp"
+                            android:layout_marginTop="4dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="8dp">
+
+                            <ImageView
+                                android:id="@+id/btnGiamCombo1"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_remove_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvSoLuongCombo1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp" />
+
+                            <ImageView
+                                android:id="@+id/btnTangCombo1"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_add_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvGiaCombo1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="69,300đ"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:gravity="end"
+                                android:layout_marginStart="16dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imgCombo2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginEnd="16dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ol_combo_couple" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvTenCombo2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OL Combo Single\nSweet 32oz - Pepsi 32oz"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvMoTaCombo2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="01 bắp nhỏ vị ngọt + 01 ly nước 32oz. Nhận trong ngày xem phim. (Chưa bao gồm phụ thu vị bắp)"
+                            android:textColor="#AAAAAA"
+                            android:textSize="12sp"
+                            android:layout_marginTop="4dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="8dp">
+
+                            <ImageView
+                                android:id="@+id/btnGiamCombo2"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_remove_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvSoLuongCombo2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp" />
+
+                            <ImageView
+                                android:id="@+id/btnTangCombo2"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_add_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvGiaCombo2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="72,000đ"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:gravity="end"
+                                android:layout_marginStart="16dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imgCombo3"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ol_combo_couple"
+                        android:layout_marginEnd="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvTenCombo3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OL Combo Couple\nSweet 32oz - Pepsi 22oz"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvMoTaCombo3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="01 bắp nhỏ vị ngọt + 02 ly nước 22oz. Nhận trong ngày xem phim. (Chưa bao gồm phụ thu vị bắp)"
+                            android:textColor="#AAAAAA"
+                            android:textSize="12sp"
+                            android:layout_marginTop="4dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="8dp">
+
+                            <ImageView
+                                android:id="@+id/btnGiamCombo3"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_remove_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvSoLuongCombo3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp" />
+
+                            <ImageView
+                                android:id="@+id/btnTangCombo3"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_add_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvGiaCombo3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="98,100đ"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:gravity="end"
+                                android:layout_marginStart="16dp" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imgCombo4"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ol_food_cb_ga"
+                        android:layout_marginEnd="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvTenCombo4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OL Food CB Ga\nVong Sweet 32oz - Pepsi 22oz"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvMoTaCombo4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="01 bắp nhỏ vị ngọt + 01 ly nước 22oz + 01 gà vòng chiên. Nhận trong ngày xem phim. (Chưa bao gồm phụ thu vị bắp)"
+                            android:textColor="#AAAAAA"
+                            android:textSize="12sp"
+                            android:layout_marginTop="4dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="8dp">
+
+                            <ImageView
+                                android:id="@+id/btnGiamCombo4"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_remove_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvSoLuongCombo4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp" />
+
+                            <ImageView
+                                android:id="@+id/btnTangCombo4"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_add_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvGiaCombo4"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="102,600đ"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:gravity="end"
+                                android:layout_marginStart="16dp" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imgCombo5"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ol_food_cb_ktc"
+                        android:layout_marginEnd="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvTenCombo5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OL Food CB KTC\nSweet 32oz - Pepsi 22oz"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvMoTaCombo5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="01 bắp nhỏ vị ngọt + 01 ly nước 22oz + 01 khoai tây chiên. Nhận trong ngày xem phim. (Chưa bao gồm phụ thu vị bắp)"
+                            android:textColor="#AAAAAA"
+                            android:textSize="12sp"
+                            android:layout_marginTop="4dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="8dp">
+
+                            <ImageView
+                                android:id="@+id/btnGiamCombo5"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_remove_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvSoLuongCombo5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp" />
+
+                            <ImageView
+                                android:id="@+id/btnTangCombo5"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_add_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvGiaCombo5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="102,600đ"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:gravity="end"
+                                android:layout_marginStart="16dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imgCombo6"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ol_food_cb_xx"
+                        android:layout_marginEnd="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvTenCombo6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OL Food CB Xuc Xich\nSweet 32oz - Pepsi 22oz"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvMoTaCombo6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="01 bắp nhỏ vị ngọt + 01 ly nước 22oz + 01 xúc xích lốc xoáy. Nhận trong ngày xem phim. (Chưa bao gồm phụ thu vị bắp)"
+                            android:textColor="#AAAAAA"
+                            android:textSize="12sp"
+                            android:layout_marginTop="4dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="8dp">
+
+                            <ImageView
+                                android:id="@+id/btnGiamCombo6"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_remove_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvSoLuongCombo6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp" />
+
+                            <ImageView
+                                android:id="@+id/btnTangCombo6"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_add_circle_outline"
+                                app:tint="#FFFFFF" />
+
+                            <TextView
+                                android:id="@+id/tvGiaCombo6"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="102,600đ"
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp"
+                                android:gravity="end"
+                                android:layout_marginStart="16dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layoutThongTinThanhToan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#222222"
+        android:layout_alignParentBottom="true"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvTenPhimChonGhe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ĐỊA ĐẠO: MẶT TRỜI TRONG BÓNG"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvSoLuongGheChon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2D SUB 0 ghế"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTongTienChonGhe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tổng tiền"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="end"/>
+
+                <TextView
+                    android:id="@+id/tvGiaTienChonGhe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0đ"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:gravity="end"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnHoanTatChonGhe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hoàn tất thanh toán (2/3)"
+            android:backgroundTint="@color/green"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="16dp"
+            android:enabled="true"/>
+
+    </LinearLayout>
+
+</LinearLayout>
