@@ -2,24 +2,24 @@ package com.example.cinemaapp.dto.request;
 
 
 public class SignUpRequestDTO {
-    private String name;
+    private String fullName;
     private String password;
     private String confirmPassword;
     private String email;
 
-    public SignUpRequestDTO(String name, String password, String confirmPassword, String email) {
-        this.name = name;
+    public SignUpRequestDTO(String fullName, String password, String confirmPassword, String email) {
+        this.fullName = fullName;
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPassword() {
