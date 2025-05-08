@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_marginEnd="4dp"
+    android:background="@android:color/black"
+    android:elevation="4dp">
+
+    <!-- Poster -->
+    <ImageView
+        android:id="@+id/imagePoster"
+        android:layout_width="160dp"
+        android:layout_height="240dp"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:src="@drawable/poster_latmat8" />
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:paddingTop="6dp"
+        android:text="Lật Mặt 8" />
+
+    <!-- Thời lượng & độ tuổi -->
+    <TextView
+        android:id="@+id/textInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="135 phút  T13"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp" />
+
+    <!-- Nút đặt vé -->
+    <Button
+        android:id="@+id/btnBooking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🎟 Đặt vé"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/bhd_green"
+        android:layout_marginTop="6dp"/>
+</LinearLayout>

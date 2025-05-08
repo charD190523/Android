@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/drawer_home" android:icon="@drawable/ic_home" android:title="Trang chủ" />
+    <item android:id="@+id/drawer_schedule" android:icon="@drawable/ic_schedule" android:title="Lịch Chiếu" />
+    <item android:id="@+id/drawer_store" android:icon="@drawable/ic_store" android:title="Cửa hàng" />
+    <item android:id="@+id/drawer_media" android:icon="@drawable/ic_media" android:title="Media" />
+    <item android:id="@+id/drawer_promo" android:icon="@drawable/ic_promo" android:title="Khuyến mãi" />
+    <item android:id="@+id/drawer_profile" android:icon="@drawable/ic_profile" android:title="Thông tin của bạn" />
+    <item android:id="@+id/drawer_recruit" android:icon="@drawable/ic_recruit" android:title="Tuyển dụng" />
+</menu>
