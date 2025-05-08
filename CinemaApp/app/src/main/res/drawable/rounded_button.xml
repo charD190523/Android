@@ -1,6 +1,0 @@
-<!-- res/drawable/rounded_button.xml -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="#1EA446" /> <!-- Màu nền -->
-    <corners android:radius="30dp" /> <!-- Bo tròn -->
-</shape>
