@@ -11,7 +11,11 @@
     <ImageView
         android:layout_width="450dp"
         android:layout_height="200dp"
+<<<<<<< HEAD
         android:src="@drawable/background_login"/>
+=======
+        android:src="@drawable/background_login" />
+>>>>>>> 1fc599b4c6a13815f8f8f670a21c555a5c9061a7
 
     <TextView
         android:layout_width="wrap_content"

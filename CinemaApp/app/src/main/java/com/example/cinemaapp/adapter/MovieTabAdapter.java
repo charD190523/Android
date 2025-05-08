@@ -29,5 +29,9 @@ public class MovieTabAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return 2; // Đang Chiếu và Sắp Chiếu
     }
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> 1fc599b4c6a13815f8f8f670a21c555a5c9061a7

@@ -6,7 +6,11 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp"
+<<<<<<< HEAD
     android:background="@android:color/holo_blue_dark"
+=======
+    android:background="@android:color/black"
+>>>>>>> 1fc599b4c6a13815f8f8f670a21c555a5c9061a7
     >
     <ImageView
         android:layout_width="450dp"
@@ -18,7 +22,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:text="Bạn cần đăng nhập để truy cập vào tài khoản của mình"
+<<<<<<< HEAD
         android:textColor="@android:color/black"
+=======
+        android:textColor="@android:color/white"
+>>>>>>> 1fc599b4c6a13815f8f8f670a21c555a5c9061a7
         android:textSize="13sp"
         android:textAlignment="center"
         />
@@ -40,10 +48,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
+<<<<<<< HEAD
             android:textColor="@android:color/black"
             android:hint="Email hoặc tên đăng nhập"
             android:textColorHint="@android:color/holo_blue_bright"
             android:background="@color/material_dynamic_secondary100"/>
+=======
+            android:textColor="@android:color/white"
+            android:hint="Email hoặc tên đăng nhập"
+            android:textColorHint="@android:color/darker_gray" />
+>>>>>>> 1fc599b4c6a13815f8f8f670a21c555a5c9061a7
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -66,9 +80,14 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="Mật khẩu của bạn"
+<<<<<<< HEAD
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/holo_blue_bright"
             android:background="@color/material_dynamic_secondary100"/>
+=======
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/darker_gray" />
+>>>>>>> 1fc599b4c6a13815f8f8f670a21c555a5c9061a7
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -77,7 +96,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Quên mật khẩu?"
+<<<<<<< HEAD
         android:textColor="@color/material_dynamic_secondary0"
+=======
+        android:textColor="#ff1ea446"
+>>>>>>> 1fc599b4c6a13815f8f8f670a21c555a5c9061a7
         android:textSize="14sp"
         android:gravity="end"
         android:paddingStart="4dp"
@@ -100,7 +123,10 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:text="Hoặc bạn chưa có tài khoản ?"
+<<<<<<< HEAD
         android:textColor="@color/black"
+=======
+>>>>>>> 1fc599b4c6a13815f8f8f670a21c555a5c9061a7
         />
     <Button
         android:id="@+id/btn_register"

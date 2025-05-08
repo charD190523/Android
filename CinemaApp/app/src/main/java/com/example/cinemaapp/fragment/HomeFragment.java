@@ -82,5 +82,8 @@ public class HomeFragment extends Fragment {
         bannerHandler.removeCallbacks(bannerRunnable);
     }
 }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 1fc599b4c6a13815f8f8f670a21c555a5c9061a7
