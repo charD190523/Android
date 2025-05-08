@@ -4,6 +4,7 @@ package com.example.cinemaapp.UserInfor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                             GeneralResponse<String> generalResponse = response.body();
                         if (generalResponse != null) {
                             String token = generalResponse.getData();
+                            Log.d("Token: ", token);
                             saveToken(token);
                             Toast.makeText(LoginActivity.this, "Login Succesfully!", Toast.LENGTH_SHORT).show();
                         }

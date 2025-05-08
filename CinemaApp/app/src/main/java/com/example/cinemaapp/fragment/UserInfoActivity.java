@@ -36,6 +36,7 @@ public class UserInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+
         tv_star_nguyet = findViewById(R.id.tv_star_nguyet);
         tv_star_nguyet.setText("Nguyễn Văn Trí");
         reject = findViewById(R.id.reject);

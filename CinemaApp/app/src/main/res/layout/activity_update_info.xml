@@ -57,34 +57,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nhập email"
-                android:text="trisc1910@gmail.com"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/darker_gray"
                 android:backgroundTint="@android:color/white"
                 android:padding="12dp"
                 android:layout_marginBottom="16dp" />
-
-            <!-- Last Name -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Họ"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:layout_marginBottom="8dp" />
-
-            <EditText
-                android:id="@+id/et_last_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Nhập họ"
-                android:text="Trí"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/darker_gray"
-                android:backgroundTint="@android:color/white"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp" />
-
             <!-- First Name -->
             <TextView
                 android:layout_width="wrap_content"
@@ -99,7 +76,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nhập tên"
-                android:text="Nguyễn"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/darker_gray"
                 android:backgroundTint="@android:color/white"
@@ -120,7 +96,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nhập số điện thoại"
-                android:text="0344800475"
                 android:inputType="phone"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/darker_gray"
@@ -142,7 +117,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Chọn ngày sinh"
-                android:text="19/10/2003"
                 android:focusable="false"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/darker_gray"
