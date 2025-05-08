@@ -5,14 +5,20 @@ import android.content.SharedPreferences;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class APIClient {
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
         if (retrofit == null) {
+            // Thêm interceptor log
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY); // Log body, headers, v.v.
+
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(chain -> {
                         Request original = chain.request();
@@ -28,12 +34,16 @@ public class APIClient {
                         Request request = requestBuilder.build();
                         return chain.proceed(request);
                     })
+                    .addInterceptor(logging) // 🟢 Thêm dòng này để log
                     .build();
+
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://172.11.241.148:8080/") // ⚡ Đổi IP máy bạn ở đây
+                    .baseUrl("http://192.168.1.170:8080/")
+                    .client(client) // 🟢 Gắn client có logging
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         return retrofit;
     }
+
 }
