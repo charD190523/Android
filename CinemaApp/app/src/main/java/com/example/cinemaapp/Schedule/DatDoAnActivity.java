@@ -1,14 +1,10 @@
 package com.example.cinemaapp.Schedule;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.IBinder;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,14 +12,46 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Locale;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.cinemaapp.R;
 
-import java.util.Locale;
-
 public class DatDoAnActivity extends AppCompatActivity {
+    public static class Combo implements Serializable {
+        private String tenCombo;
+        private int soLuong;
+        private int giaCombo;
 
+        public Combo(String tenCombo, int soLuong, int giaCombo) {
+            this.tenCombo = tenCombo;
+            this.soLuong = soLuong;
+            this.giaCombo = giaCombo;
+        }
+
+        public String getTenCombo() {
+            return tenCombo;
+        }
+
+        public int getSoLuong() {
+            return soLuong;
+        }
+
+        public int getGiaCombo() {
+            return giaCombo;
+        }
+    }
+    private String viTriGhe; // Khai báo biến viTriGhe ở cấp độ class
     private ImageView btnBackDatDoAn;
     private TextView tvTenPhimDatDoAn;
     private TextView tvSoLuongGheDatDoAn;
@@ -171,14 +199,19 @@ public class DatDoAnActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             tenPhim = intent.getStringExtra("tenPhim");
-            soLuongGhe = intent.getIntExtra("soLuongGhe", 0);
+            Log.d("DEBUG_GHE", "← DatDoAn nhận:"
+                    + " SL=" + intent.getIntExtra("soLuongVe", -1)
+                    + " | viTri=" + intent.getStringExtra("viTriGhe"));
+            Log.d("DEBUG_GHE", "   soLuongGhe key cũ = "
+                    + intent.getIntExtra("soLuongGhe", -1));
+
+            soLuongGhe = intent.getIntExtra("soLuongVe", 0);
             tongTienVe = intent.getIntExtra("tongTienVe", 0);
             remainingTimeInMillisDatDoAn = intent.getLongExtra("thoiGianConLai", 0);
             tenRap = intent.getStringExtra("tenRap"); // Nhận tên rạp
             ngayChieu = intent.getStringExtra("ngayChieu"); // Nhận ngày chiếu
             gioChieu = intent.getStringExtra("gioChieu"); // Nhận giờ chiếu
-
-//            tvTimerDatDoAn.setText(formatTime(remainingTimeInMillisDatDoAn / 1000));
+            viTriGhe = intent.getStringExtra("viTriGhe");//            tvTimerDatDoAn.setText(formatTime(remainingTimeInMillisDatDoAn / 1000));
             tvTenPhimDatDoAn.setText(tenPhim);
             tvSoLuongGheDatDoAn.setText(String.format(Locale.getDefault(), "2D SUB %d ghế", soLuongGhe));
             tvTongTienDatDoAn.setText("Tổng tiền:"); // Label
@@ -196,18 +229,42 @@ public class DatDoAnActivity extends AppCompatActivity {
 
         // Xử lý nút hoàn tất thanh toán (chuyển sang bước 3)
         btnHoanTatChonGhe.setOnClickListener(v -> {
+            ArrayList<Combo> danhSachCombo = new ArrayList<>();
+            if (soLuongCombo1 > 0) {
+                danhSachCombo.add(new Combo("OL Combo Single Sweet 22oz", soLuongCombo1, giaCombo1));
+            }
+            if (soLuongCombo2 > 0) {
+                danhSachCombo.add(new Combo("OL Combo Single Sweet 32oz", soLuongCombo2, giaCombo2));
+            }
+            if (soLuongCombo3 > 0) {
+                danhSachCombo.add(new Combo("OL Combo Couple Sweet 32oz", soLuongCombo3, giaCombo3));
+            }
+            if (soLuongCombo4 > 0) {
+                danhSachCombo.add(new Combo("OL Food CB Ga Vong Sweet 32oz ", soLuongCombo4, giaCombo4));
+            }
+            if (soLuongCombo5 > 0) {
+                danhSachCombo.add(new Combo("OL Food CB KTC Sweet 32oz", soLuongCombo5, giaCombo5));
+            }
+            if (soLuongCombo6 > 0) {
+                danhSachCombo.add(new Combo("OL Food CB Xuc Xich Sweet 32oz", soLuongCombo6, giaCombo6));
+            }
+
+            // Thêm dòng này để truyền danh sách combo
             // Tạo Intent để chuyển sang ThanhToanActivity
             Intent intentThanhToan = new Intent(DatDoAnActivity.this, ThanhToanActivity.class);
-
-            // Truyền dữ liệu cần thiết sang ThanhToanActivity (ví dụ: tổng tiền)
             intentThanhToan.putExtra("tongTienThanhToan", tongTienThanhToan);
             intentThanhToan.putExtra("tenPhim", tenPhim);
-            intentThanhToan.putExtra("soLuongGhe", soLuongGhe);
+            intentThanhToan.putExtra("soLuongVe", soLuongGhe);
+            intentThanhToan.putExtra("viTriGhe", viTriGhe); // Đảm bảo bạn đã lấy 'viTriGhe' ở onCreate
             intentThanhToan.putExtra("tongTienVe", tongTienVe);
             intentThanhToan.putExtra("tongTienDoAn", tongTienDoAn);
             intentThanhToan.putExtra("tenRap", tenRap);
             intentThanhToan.putExtra("ngayChieu", ngayChieu);
             intentThanhToan.putExtra("gioChieu", gioChieu);
+            intentThanhToan.putExtra("danhSachCombo", danhSachCombo);
+            Log.d("DEBUG_GHE", "→ DatDoAn gửi:"
+                    + " SL=" + soLuongGhe
+                    + " | viTri=" + viTriGhe);
 
             // Khởi chạy ThanhToanActivity
             startActivity(intentThanhToan);
@@ -215,8 +272,9 @@ public class DatDoAnActivity extends AppCompatActivity {
         setupComboListeners();
 
 
+
     }
-//    private void startTimerDatDoAn() {
+    //    private void startTimerDatDoAn() {
 //        countDownTimerDatDoAn = new CountDownTimer(remainingTimeInMillisDatDoAn, COUNTDOWN_INTERVAL) {
 //            @Override
 //            public void onTick(long millisUntilFinished) {
@@ -352,11 +410,6 @@ public class DatDoAnActivity extends AppCompatActivity {
         tvGiaTienDatDoAn.setText(String.format(Locale.getDefault(), "%dđ", tongTienThanhToan));
     }
 
-//    private String formatTime(long seconds) {
-//        long minutes = (seconds % 3600) / 60;
-//        long secs = seconds % 60;
-//        return String.format(Locale.getDefault(), "%02d:%02d", minutes, secs);
-//    }
     private String calculateEndTime(String startTime) {
         String[] parts = startTime.split(":");
         int hour = Integer.parseInt(parts[0]);

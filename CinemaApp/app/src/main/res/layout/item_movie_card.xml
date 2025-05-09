@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="200dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp"
     android:layout_marginEnd="4dp"
     android:background="@android:color/black"
-    android:elevation="4dp">
+    android:elevation="4dp"
+    android:gravity="center_horizontal">
 
     <!-- Poster -->
     <ImageView
-        android:id="@+id/imagePoster"
-        android:layout_width="160dp"
+        android:id="@+id/image_url"
+        android:layout_width="match_parent"
         android:layout_height="240dp"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
@@ -19,31 +20,56 @@
 
     <!-- Tiêu đề -->
     <TextView
-        android:id="@+id/textTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/movie_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:textColor="@android:color/white"
-        android:textSize="14sp"
+        android:textSize="11sp"
         android:textStyle="bold"
         android:paddingTop="6dp"
+        android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:text="Lật Mặt 8" />
 
-    <!-- Thời lượng & độ tuổi -->
-    <TextView
-        android:id="@+id/textInfo"
-        android:layout_width="wrap_content"
+    <!-- LinearLayout chứa Thời gian và Độ tuổi -->
+    <LinearLayout
+        android:id="@+id/layoutDurationAndAge"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="135 phút  T13"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="12sp" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        >
+
+        <!-- Thời gian -->
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="135 phút"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp"
+            android:layout_marginEnd="10dp" />
+
+        <!-- Độ tuổi -->
+        <TextView
+            android:id="@+id/required_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="T13"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp" />
+    </LinearLayout>
 
     <!-- Nút đặt vé -->
     <Button
         android:id="@+id/btnBooking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="110dp"
+        android:layout_height="37dp"
+        android:minHeight="40dp"
         android:text="🎟 Đặt vé"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/bhd_green"
-        android:layout_marginTop="6dp"/>
+        />
 </LinearLayout>

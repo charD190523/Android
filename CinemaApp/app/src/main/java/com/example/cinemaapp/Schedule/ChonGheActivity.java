@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.cinemaapp.R;
+import com.example.cinemaapp.Schedule.DatDoAnActivity;
+import com.example.cinemaapp.Schedule.TimerService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,11 +51,13 @@ public class ChonGheActivity extends AppCompatActivity {
     private String tenPhong;
     private String ngayChieu;
 
-    private List<View> gheDaChon = new ArrayList<>();
+    private List<String> gheDaChon = new ArrayList<>();
+    private int soVe = 0;
     private int tongTien = 0;
     private final int giaVe = 45000;
     private TimerService timerService;
     private boolean isServiceBound = false;
+    private String hangGheDoi = "J";
 
     private final BroadcastReceiver timerTickReceiver = new BroadcastReceiver() {
         @Override
@@ -74,7 +79,6 @@ public class ChonGheActivity extends AppCompatActivity {
             TimerService.LocalBinder binder = (TimerService.LocalBinder) service;
             timerService = binder.getService();
             isServiceBound = true;
-            // Cập nhật giao diện ngay lập tức nếu service đã có thời gian
             tvTimerChonGhe.setText(timerService.formatTime(timerService.getRemainingTime() / 1000));
         }
 
@@ -103,7 +107,7 @@ public class ChonGheActivity extends AppCompatActivity {
         tvGiaTienChonGhe = findViewById(R.id.tvGiaTienChonGhe);
         btnHoanTatChonGhe = findViewById(R.id.btnHoanTatChonGhe);
 
-        // Nhận thông tin từ Intent (lịch chiếu)
+        // Nhận thông tin từ Intent
         Intent intent = getIntent();
         if (intent != null) {
             tenPhim = intent.getStringExtra("tenPhim");
@@ -125,7 +129,7 @@ public class ChonGheActivity extends AppCompatActivity {
         startService(serviceIntent);
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
-        // Đăng ký BroadcastReceiver để nhận cập nhật thời gian
+        // Đăng ký BroadcastReceiver
         LocalBroadcastManager.getInstance(this).registerReceiver(timerTickReceiver,
                 new IntentFilter(TimerService.ACTION_TIMER_TICK));
         LocalBroadcastManager.getInstance(this).registerReceiver(timerTickReceiver,
@@ -134,19 +138,29 @@ public class ChonGheActivity extends AppCompatActivity {
         // Xử lý nút quay lại
         btnBackChonGhe.setOnClickListener(v -> finish());
 
-        // Xử lý nút hoàn tất thanh toán
+        // Xử lý nút hoàn tất chọn ghế
+
         btnHoanTatChonGhe.setOnClickListener(v -> {
             if (!gheDaChon.isEmpty()) {
-                Intent intentDatDoAn = new Intent(ChonGheActivity.this, DatDoAnActivity.class);
-                intentDatDoAn.putExtra("tenPhim", tenPhim);
-                intentDatDoAn.putExtra("soLuongGhe", gheDaChon.size());
-                intentDatDoAn.putExtra("tongTienVe", tongTien);
-                intentDatDoAn.putExtra("tenRap", tenRap);
-                intentDatDoAn.putExtra("ngayChieu", ngayChieu);
-                intentDatDoAn.putExtra("gioChieu", gioChieu);
-                startActivity(intentDatDoAn);
+                // ... code sử dụng biến 'intent' cũ ...
+
+                Intent intentToDatDoAn = new Intent(ChonGheActivity.this, DatDoAnActivity.class); // Khai báo với tên khác
+
+                intentToDatDoAn.putExtra("tenPhim", tenPhim);
+                intentToDatDoAn.putExtra("soLuongVe", soVe);
+                intentToDatDoAn.putExtra("viTriGhe", String.join(", ", gheDaChon));
+                intentToDatDoAn.putExtra("giaVe", giaVe);
+                intentToDatDoAn.putExtra("tenRap", tenRap);
+                intentToDatDoAn.putExtra("ngayChieu", ngayChieu);
+                intentToDatDoAn.putExtra("gioChieu", gioChieu);
+                intentToDatDoAn.putExtra("tongTienVe", tongTien);
+                Log.d("DEBUG_GHE", "→ ChonGhe gửi:"
+                        + " SL=" + gheDaChon.size()
+                        + " | viTri=" + String.join(", ", gheDaChon));
+
+                startActivity(intentToDatDoAn);
             } else {
-                Toast.makeText(this, "Vui lòng chọn ghế trước khi thanh toán.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChonGheActivity.this, "Vui lòng chọn ghế.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -155,7 +169,7 @@ public class ChonGheActivity extends AppCompatActivity {
         String[] parts = startTime.split(":");
         int hour = Integer.parseInt(parts[0]);
         int minute = Integer.parseInt(parts[1]);
-        minute += 120; // Cộng thêm 2 tiếng (120 phút)
+        minute += 120;
         hour += minute / 60;
         minute %= 60;
         hour %= 24;
@@ -189,11 +203,12 @@ public class ChonGheActivity extends AppCompatActivity {
             seatDoiParams.setMargins(8, 8, 8, 8);
 
             int seatIndex = 0;
-            if (hang == 'J') {
+            if (String.valueOf(hang).equals(hangGheDoi)) {
                 // Xử lý riêng cho hàng J với ghế đôi
                 for (int k = 0; k < soGheDoiJ; k++) {
                     boolean isBooked = bookedSeats[i][seatIndex++];
-                    ImageView seat = createSeat(hang, k * 2, "Couple", true, isBooked);
+                    ImageView seat = createSeat(hang, k + 1, "Couple", true, isBooked); // Vị trí đôi từ 1 đến 7
+                    seat.setTag(String.valueOf(hang) + (k + 1) + "-" + "Couple" + "-" + (isBooked ? "booked" : "available"));
                     hangLayout.addView(seat, seatDoiParams);
                 }
             } else {
@@ -201,7 +216,8 @@ public class ChonGheActivity extends AppCompatActivity {
                 // Ghế bên trái
                 for (int j = 0; j < soGheBien; j++) {
                     boolean isBooked = bookedSeats[i][seatIndex++];
-                    ImageView seat = createSeat(hang, j, "Stand", false, isBooked);
+                    ImageView seat = createSeat(hang, j + 1, "Stand", false, isBooked); // Vị trí thường từ 1
+                    seat.setTag(String.valueOf(hang) + (j + 1) + "-" + "Stand" + "-" + (isBooked ? "booked" : "available"));
                     hangLayout.addView(seat, seatParams);
                 }
 
@@ -215,9 +231,10 @@ public class ChonGheActivity extends AppCompatActivity {
                 // Ghế giữa
                 for (int k = 0; k < soGheGiua[i]; k++) {
                     String loaiGhe = (i < 3) ? "Stand" : (i < 9) ? "VIP" : "Couple";
-                    boolean isDoi = (loaiGhe.equals("Couple"));
-                    boolean isBooked = bookedSeats[i][seatIndex++];
-                    ImageView seat = createSeat(hang, (soGheBien > 0 ? soGheBien + k : k), loaiGhe, isDoi, isBooked);
+                    boolean isDoi = (loaiGhe.equals("Couple") && !String.valueOf(hang).equals(hangGheDoi));                    boolean isBooked = bookedSeats[i][seatIndex++];
+                    int viTriGhe = (soGheBien > 0 ? soGheBien + k + 1 : k + 1); // Vị trí thường từ 1
+                    ImageView seat = createSeat(hang, viTriGhe, loaiGhe, isDoi, isBooked);
+                    seat.setTag(String.valueOf(hang) + viTriGhe + "-" + loaiGhe + "-" + (isBooked ? "booked" : "available"));
                     hangLayout.addView(seat, isDoi ? seatDoiParams : seatParams);
                     if (isDoi && k < soGheGiua[i] - 1) {
                         k++;
@@ -235,7 +252,9 @@ public class ChonGheActivity extends AppCompatActivity {
                 // Ghế bên phải
                 for (int l = 0; l < soGheBien; l++) {
                     boolean isBooked = bookedSeats[i][seatIndex++];
-                    ImageView seat = createSeat(hang, (soGheBien > 0 ? soGheBien + soGheGiua[i] + l : soGheGiua[i] + l), "Stand", false, isBooked);
+                    int viTriGhe = (soGheBien > 0 ? soGheBien + soGheGiua[i] + l + 1 : soGheGiua[i] + l + 1); // Vị trí thường từ 1
+                    ImageView seat = createSeat(hang, viTriGhe, "Stand", false, isBooked);
+                    seat.setTag(String.valueOf(hang) + viTriGhe + "-" + "Stand" + "-" + (isBooked ? "booked" : "available"));
                     hangLayout.addView(seat, seatParams);
                 }
             }
@@ -256,13 +275,12 @@ public class ChonGheActivity extends AppCompatActivity {
         return label;
     }
 
-    // Hàm giả định để tạo trạng thái ghế đã đặt (cần implement logic thực tế của bạn)
     private boolean[][] generateBookedSeats(int numRows, int maxSeatsPerRow) {
         boolean[][] booked = new boolean[numRows][maxSeatsPerRow];
         Random random = new Random();
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < booked[i].length; j++) {
-                booked[i][j] = random.nextBoolean() && random.nextBoolean(); // Tạo ngẫu nhiên trạng thái đã đặt
+                booked[i][j] = random.nextBoolean() && random.nextBoolean();
             }
         }
         return booked;
@@ -274,7 +292,7 @@ public class ChonGheActivity extends AppCompatActivity {
         int widthPx = (int) (isDoi ? 120 * density : 60 * density);
         int heightPx = (int) (60 * density);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthPx, heightPx);
-        params.setMargins(4, 4, 4, 4); // Giảm margin nhiều hơn
+        params.setMargins(4, 4, 4, 4);
         seatView.setLayoutParams(params);
 
         int iconResId;
@@ -288,28 +306,60 @@ public class ChonGheActivity extends AppCompatActivity {
             iconResId = R.drawable.ic_seat_couple;
         }
         seatView.setImageResource(iconResId);
-        seatView.setTag(hang + String.valueOf(soThuTu) + "-" + loaiGhe + "-" + (isBooked ? "booked" : "available"));
 
         seatView.setOnClickListener(v -> {
             String tag = (String) v.getTag();
-            if (tag.endsWith("available")) {
-                if (!gheDaChon.contains(v)) {
-                    ((ImageView) v).setImageResource(R.drawable.ic_seat_selected);
-                    v.setTag(tag.replace("available", "selected"));
-                    gheDaChon.add(v);
+            String[] parts = tag.split("-");
+            String maGhe = parts[0];
+            String loaiGheHienTai = parts[1];
+            boolean isCurrentlyBooked = parts[2].equals("booked");
+            boolean isCurrentlySelected = parts[2].equals("selected");
+            boolean isCoupleSeat = loaiGheHienTai.equals("Couple")   // là ghế đôi
+                    && maGhe.startsWith(hangGheDoi);
+            if (!isCurrentlyBooked) {
+                if (isCoupleSeat) {
+                    // Xử lý ghế đôi hàng J
+                    int viTriDoi = Integer.parseInt(maGhe.substring(1));
+                    String ghe1 = hangGheDoi + (viTriDoi * 2 - 1);
+                    String ghe2 = hangGheDoi + (viTriDoi * 2);
+
+                    boolean ghe1DaChon = gheDaChon.contains(ghe1);
+                    boolean ghe2DaChon = gheDaChon.contains(ghe2);
+
+                    if (!ghe1DaChon && !ghe2DaChon) {
+                        gheDaChon.add(ghe1);
+                        gheDaChon.add(ghe2);
+                        soVe+=2;
+                        ((ImageView) v).setImageResource(R.drawable.ic_seat_selected); // Cần xử lý hiển thị cho cả 2 ghế
+                        v.setTag(maGhe + "-" + loaiGheHienTai + "-" + "selected"); // Tạm thời tag vào view cha
+                        updateThongTinThanhToan();
+                    } else if (ghe1DaChon && ghe2DaChon) {
+                        gheDaChon.remove(ghe1);
+                        gheDaChon.remove(ghe2);
+                        soVe-=2;
+                        ((ImageView) v).setImageResource(iconResId); // Cần xử lý hiển thị cho cả 2 ghế
+                        v.setTag(maGhe + "-" + loaiGheHienTai + "-" + "available"); // Tạm thời tag vào view cha
+                        updateThongTinThanhToan();
+                    } else {
+                        Toast.makeText(ChonGheActivity.this, "Vui lòng chọn cả cặp ghế đôi.", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    ((ImageView) v).setImageResource(iconResId);
-                    v.setTag(tag.replace("selected", "available"));
-                    gheDaChon.remove(v);
+                    // Xử lý ghế đơn
+                    if (!isCurrentlySelected) {
+                        gheDaChon.add(maGhe);
+                        soVe+=1;
+                        ((ImageView) v).setImageResource(R.drawable.ic_seat_selected);
+                        v.setTag(maGhe + "-" + loaiGheHienTai + "-" + "selected");
+                    } else {
+                        gheDaChon.remove(maGhe);
+                        soVe-=1;
+                        ((ImageView) v).setImageResource(iconResId);
+                        v.setTag(maGhe + "-" + loaiGheHienTai + "-" + "available");
+                    }
                 }
                 updateThongTinThanhToan();
-            } else if (tag.endsWith("selected")) {
-                ((ImageView) v).setImageResource(iconResId);
-                v.setTag(tag.replace("selected", "available"));
-                gheDaChon.remove(v);
-                updateThongTinThanhToan();
-            } else if (tag.endsWith("booked")) {
-                Toast.makeText(this, "Ghế này đã được đặt", Toast.LENGTH_SHORT).show();
+            } else if (isCurrentlyBooked) {
+                Toast.makeText(ChonGheActivity.this, "Ghế này đã được đặt", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -328,8 +378,8 @@ public class ChonGheActivity extends AppCompatActivity {
 
     private void updateThongTinThanhToan() {
         int soGhe = gheDaChon.size();
-        tongTien = soGhe * giaVe;
-        tvSoLuongGheChon.setText(String.format(Locale.getDefault(), "2D SUB %d ghế", soGhe));
+        tongTien = soVe * giaVe;
+        tvSoLuongGheChon.setText(String.format(Locale.getDefault(), "2D SUB %d ghế", soVe));
         tvGiaTienChonGhe.setText(String.format(Locale.getDefault(), "%dđ", tongTien));
         btnHoanTatChonGhe.setEnabled(soGhe > 0);
         btnHoanTatChonGhe.setBackgroundTintList(getColorStateList(soGhe > 0 ? R.color.green : R.color.gray));

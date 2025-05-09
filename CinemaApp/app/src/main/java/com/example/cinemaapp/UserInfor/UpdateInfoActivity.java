@@ -31,7 +31,7 @@ import retrofit2.Response;
 public class UpdateInfoActivity extends AppCompatActivity {
     private EditText etDob, etEmail, etLastName, etFirstName, etPhone, etAddress;
     private Spinner spinnerGender, spinnerProvince;
-
+    public static String ten;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +93,7 @@ public class UpdateInfoActivity extends AppCompatActivity {
                         if (user != null) {
                             etEmail.setText(user.getEmail());
                             etFirstName.setText(user.getFullName());
+                            ten = user.getFullName();
                             etPhone.setText(user.getTelephone()==null?"":user.getTelephone());
                             etDob.setText(String.valueOf(user.getBirthday()==null?"":user.getBirthday()));
                             etAddress.setText(user.getAddress()==null?"":user.getAddress());

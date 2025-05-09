@@ -1,5 +1,6 @@
 package com.example.cinemaapp.Schedule;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,6 +13,8 @@ import android.os.IBinder;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -27,13 +30,21 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.cinemaapp.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 public class ThanhToanActivity extends AppCompatActivity {
 
-    // Khai báo các view (giữ nguyên)
+    // Khai báo các view
     private TextView movieTitleTextView;
     private TextView theaterInfoTextView;
     private TextView showtimeInfoTextView;
     private TextView seatInfoTextView;
+    private TextView ticketDetailsTextView, ticketPriceTextView; // Để hiển thị chi tiết vé
+    private TextView foodDetailsTextView, foodPriceTextView;   // Để hiển thị chi tiết đồ ăn
     private TextView totalAmountTextView;
     private Button completePaymentButton;
     private TextView tvTimerThanhToan;
@@ -50,19 +61,24 @@ public class ThanhToanActivity extends AppCompatActivity {
     private LinearLayout paymentZaloPayLayout;
     private LinearLayout paymentShopeePayLayout;
 
-    // Các biến dữ liệu (giữ nguyên)
+    // Các biến dữ liệu
     private String tenPhim;
     private int soLuongGhe;
     private int tongTienVe;
-    private int tongTienDoAn;
+    private int tongTienDoAn = 0; // Khởi tạo là 0
     private int tongTienThanhToan;
     private String tenRap;
     private String ngayChieu;
     private String gioChieu;
+    private String viTriGhe; // Thêm biến để nhận vị trí ghế
 
-    // Các biến liên quan đến TimerService (giữ nguyên)
+    // Danh sách combo (nếu có)
+    private ArrayList<DatDoAnActivity.Combo> danhSachCombo = new ArrayList<>();
+
+    // Các biến liên quan đến TimerService
     private TimerService timerService;
     private boolean isServiceBound = false;
+    private ImageView moviePosterImageView;
 
     // Biến theo dõi trạng thái chọn phương thức thanh toán và điều khoản
     private boolean isPaymentMethodSelected = false;
@@ -72,7 +88,7 @@ public class ThanhToanActivity extends AppCompatActivity {
         updatePaymentButtonState();
     }
 
-    // BroadcastReceiver và ServiceConnection (giữ nguyên)
+    // BroadcastReceiver và ServiceConnection
     private final BroadcastReceiver timerTickReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -101,12 +117,16 @@ public class ThanhToanActivity extends AppCompatActivity {
             isServiceBound = false;
         }
     };
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thanh_toan);
 
-        // Ánh xạ các view (giữ nguyên)
+
+        // Ánh xạ các view
+        moviePosterImageView = findViewById(R.id.movie_poster);
+        String tenPhim = getIntent().getStringExtra("tenPhim");
         tvTimerThanhToan = findViewById(R.id.tvTimerThanhToan);
         btnBackThanhToan = findViewById(R.id.btnBackThanhToan);
         termsConditionsCheckbox = findViewById(R.id.terms_conditions);
@@ -122,6 +142,10 @@ public class ThanhToanActivity extends AppCompatActivity {
         showtimeInfoTextView = findViewById(R.id.showtime_info);
         seatInfoTextView = findViewById(R.id.seat_info);
         totalAmountTextView = findViewById(R.id.total_amount);
+        ticketDetailsTextView = findViewById(R.id.ticket_details); // Ánh xạ TextView chi tiết vé
+        foodDetailsTextView = findViewById(R.id.food_details);   // Ánh xạ TextView chi tiết đồ ăn
+        ticketPriceTextView = findViewById(R.id.ticket_price);
+        foodPriceTextView = findViewById(R.id.food_price);
 
         // Ánh xạ các LinearLayout phương thức thanh toán
         paymentVnpayLayout = findViewById(R.id.payment_vnpay_layout);
@@ -129,11 +153,28 @@ public class ThanhToanActivity extends AppCompatActivity {
         paymentZaloPayLayout = findViewById(R.id.payment_zalopay_layout);
         paymentShopeePayLayout = findViewById(R.id.payment_shopeepay_layout);
 
+        if (tenPhim != null) {
+            if (tenPhim.equals("Địa đạo: Mật trời trong bóng tối")) {
+                moviePosterImageView.setImageResource(R.drawable.dia_dao_mat_troi);
+            } else if (tenPhim.equals("A Minecraft Movie")) {
+                moviePosterImageView.setImageResource(R.drawable.a_minecraft_movie);
+            } else if (tenPhim.equals("DROP: Buổi hẹn hò kinh hoàng")) {
+                moviePosterImageView.setImageResource(R.drawable.drop_buoi_hen_ho);
+            } else if (tenPhim.equals("PANOR: Tà thuật huyết ngải")) {
+                moviePosterImageView.setImageResource(R.drawable.panor_ta_thuat);
+            } else {
+                // Ảnh mặc định nếu không tìm thấy tên phim trùng khớp
+                moviePosterImageView.setImageResource(R.drawable.default_poster);
+            }
+        } else {
+            // Ảnh mặc định nếu không nhận được tên phim từ Intent
+            moviePosterImageView.setImageResource(R.drawable.default_poster);
+        }
         // Ban đầu vô hiệu hóa nút thanh toán
         completePaymentButton.setEnabled(false);
         completePaymentButton.setBackgroundTintList(getResources().getColorStateList(android.R.color.darker_gray));
 
-        // Thiết lập SpannableString cho TextView điều khoản (giữ nguyên)
+        // Thiết lập SpannableString cho TextView điều khoản
         String prefixText = "Tôi đã đọc, hiểu và đồng ý với ";
         String linkText = "điều khoản";
         String fullText = prefixText + linkText;
@@ -179,11 +220,66 @@ public class ThanhToanActivity extends AppCompatActivity {
             }
         });
 
-        // Lấy dữ liệu từ Intent và cập nhật UI (giữ nguyên)
+        // Lấy dữ liệu từ Intent và cập nhật UI
         Bundle extras = getIntent().getExtras();
-        if (extras != null) { /* ... */ }
+        Log.d("DEBUG_GHE", "← ThanhToan nhận:"
+                + " SL=" + extras.getInt("soLuongVe", -1)   // đọc key mới
+                + " | SL_alt=" + extras.getInt("soLuongGhe", -1)  // key cũ
+                + " | viTri=" + extras.getString("viTriGhe"));
 
-        // Thiết lập OnClickListener cho nút hoàn tất thanh toán (giữ nguyên logic kiểm tra cả điều khoản và phương thức thanh toán)
+        if (extras != null) {
+            tenPhim = extras.getString("tenPhim");
+            soLuongGhe = extras.getInt("soLuongVe", 0);
+            tongTienVe = extras.getInt("tongTienVe", 0);
+            tongTienDoAn = extras.getInt("tongTienDoAn", 0);
+            tenRap = extras.getString("tenRap");
+            ngayChieu = extras.getString("ngayChieu");
+            gioChieu = extras.getString("gioChieu");
+            viTriGhe = extras.getString("viTriGhe");
+            tongTienThanhToan = extras.getInt("tongTienThanhToan", 0);// Lấy thông tin vị trí ghế
+
+            // Nhận danh sách combo (nếu có)
+            ArrayList<DatDoAnActivity.Combo> comboList = (ArrayList<DatDoAnActivity.Combo>) extras.getSerializable("danhSachCombo");
+            if (comboList != null) {
+                danhSachCombo.addAll(comboList);
+                for (DatDoAnActivity.Combo combo : danhSachCombo) {
+                    tongTienDoAn += combo.getSoLuong() * combo.getGiaCombo() - combo.getGiaCombo();
+                }
+            }
+
+            movieTitleTextView.setText(tenPhim);
+            theaterInfoTextView.setText(tenRap);
+            showtimeInfoTextView.setText(String.format("%s - %s", ngayChieu, gioChieu));
+            seatInfoTextView.setText(String.format("%d vé", soLuongGhe));
+            totalAmountTextView.setText(String.format(Locale.getDefault(), "%dđ", tongTienThanhToan));
+
+            // Hiển thị chi tiết vé
+            // Hiển thị chi tiết vé
+            if (viTriGhe != null && !viTriGhe.isEmpty()) {
+                ticketDetailsTextView.setText(String.format(Locale.getDefault(), "%d vé 2D: %s", soLuongGhe, viTriGhe));
+            } else {
+                ticketDetailsTextView.setText(String.format(Locale.getDefault(), "%d vé", soLuongGhe));
+            }
+
+// Giá vé
+            ticketPriceTextView.setText(String.format(Locale.getDefault(), "%dđ", tongTienVe));
+
+            // Hiển thị chi tiết đồ ăn (như trước)
+            StringBuilder foodDetailsBuilder = new StringBuilder();
+            if (!danhSachCombo.isEmpty()) {
+                for (DatDoAnActivity.Combo combo : danhSachCombo) {
+                    foodDetailsBuilder.append(combo.getSoLuong()).append(" x ").append(combo.getTenCombo());
+                }
+                foodPriceTextView.setText(String.format(Locale.getDefault(), "%dđ", tongTienDoAn));
+                foodDetailsTextView.setText(foodDetailsBuilder.toString().trim());
+            } else {
+                foodDetailsTextView.setText("Không có đồ ăn hoặc nước được chọn.");
+                foodPriceTextView.setText("0đ");
+            }
+
+        }
+
+        // Thiết lập OnClickListener cho nút hoàn tất thanh toán
         completePaymentButton.setOnClickListener(v -> {
             if (termsConditionsCheckbox.isChecked() && isPaymentMethodSelected) {
                 String selectedPaymentMethod = "";
@@ -211,7 +307,7 @@ public class ThanhToanActivity extends AppCompatActivity {
             }
         });
 
-        // Bind to TimerService và Register BroadcastReceiver (giữ nguyên)
+        // Bind to TimerService và Register BroadcastReceiver
         Intent serviceIntent = new Intent(this, TimerService.class);
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         LocalBroadcastManager.getInstance(this).registerReceiver(timerTickReceiver, new IntentFilter(TimerService.ACTION_TIMER_TICK));

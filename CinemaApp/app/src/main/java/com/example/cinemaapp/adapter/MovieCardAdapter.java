@@ -12,7 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.cinemaapp.R;
+import com.example.cinemaapp.model.Movie;
 
 import java.util.List;
 
@@ -36,18 +38,22 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = movieList.get(position);
-        holder.textTitle.setText(movie.getTitle());
-        holder.textInfo.setText(movie.getDuration() + " phút  " + movie.getAgeTag());
-        holder.imagePoster.setImageResource(movie.getImageResId());
+        holder.movie_name.setText(movie.getMovie_name());
+        String[] timeParts = movie.getDuration().split(":");
+        int totalMinutes = Integer.parseInt(timeParts[0]) * 60 + Integer.parseInt(timeParts[1]);
+        holder.duration.setText(totalMinutes + " phút");
+        holder.required_age.setText(movie.getRequired_age() + "+");
+        Glide.with(context).load(movie.getImage_url()).into(holder.image_url);
+        Glide.with(context).load(movie.getImage_url()).into(holder.image_url);
 
-        if (movie.isBookingAvailable) {
+        if (movie.isAvailable()) {
             holder.btnBooking.setVisibility(View.VISIBLE);
         } else {
             holder.btnBooking.setVisibility(View.GONE);
         }
 
         holder.btnBooking.setOnClickListener(v -> {
-            Toast.makeText(context, "Đặt vé: " + movie.getTitle(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Đặt vé: " + movie.getMovie_name(), Toast.LENGTH_SHORT).show();
             // TODO: chuyển sang màn hình đặt vé
         });
     }
@@ -58,40 +64,18 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
     }
 
     static class MovieViewHolder extends RecyclerView.ViewHolder {
-        ImageView imagePoster;
-        TextView textTitle, textInfo;
+        ImageView image_url;
+        TextView movie_name, duration, required_age;
         Button btnBooking;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
-            imagePoster = itemView.findViewById(R.id.imagePoster);
-            textTitle = itemView.findViewById(R.id.textTitle);
-            textInfo = itemView.findViewById(R.id.textInfo);
+            image_url = itemView.findViewById(R.id.image_url);
+            movie_name = itemView.findViewById(R.id.movie_name);
+            duration = itemView.findViewById(R.id.duration);
+            required_age = itemView.findViewById(R.id.required_age);
             btnBooking = itemView.findViewById(R.id.btnBooking);
         }
-    }
-
-    // Movie class nội bộ (hoặc có thể tách riêng)
-    public static class Movie {
-        private final String title;
-        private final int duration;
-        private final String ageTag;
-        private final int imageResId;
-
-        public Movie(String title, int duration, String ageTag, int imageResId, boolean isBookingAvailable) {
-            this.isBookingAvailable = isBookingAvailable;
-            this.title = title;
-            this.duration = duration;
-            this.ageTag = ageTag;
-            this.imageResId = imageResId;
-        }
-
-        public String getTitle() { return title; }
-        public int getDuration() { return duration; }
-        public String getAgeTag() { return ageTag; }
-        public int getImageResId() { return imageResId; }
-
-        public boolean isBookingAvailable;
     }
 }
 

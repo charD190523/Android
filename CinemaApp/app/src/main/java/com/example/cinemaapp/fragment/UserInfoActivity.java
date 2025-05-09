@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,9 +24,16 @@ import com.example.cinemaapp.UserInfor.MenuItem;
 import com.example.cinemaapp.UserInfor.RewardsActivity;
 import com.example.cinemaapp.UserInfor.TransactionHistoryActivity;
 import com.example.cinemaapp.UserInfor.UpdateInfoActivity;
+import com.example.cinemaapp.api.AuthAPI;
+import com.example.cinemaapp.client.APIClient;
+import com.example.cinemaapp.dto.UpdateInforDTO;
+import com.example.cinemaapp.factory.GeneralResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class UserInfoActivity extends AppCompatActivity {
     TextView tv_star_nguyet;
@@ -38,7 +46,7 @@ public class UserInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_info);
 
         tv_star_nguyet = findViewById(R.id.tv_star_nguyet);
-        tv_star_nguyet.setText("Nguyễn Văn Trí");
+        fetchUserInfo();
         reject = findViewById(R.id.reject);
         reject.setOnClickListener(v -> {
             Intent intent = new Intent( UserInfoActivity.this,MainActivity.class);
@@ -119,6 +127,28 @@ public class UserInfoActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent( UserInfoActivity.this,MainActivity.class);
         startActivity(intent);
+    }
+
+    private void fetchUserInfo() {
+        AuthAPI apiService = APIClient.getClient().create(AuthAPI.class);
+        apiService.getInfor().enqueue(new retrofit2.Callback<GeneralResponse<UpdateInforDTO>>() {
+            @Override
+            public void onResponse(Call<GeneralResponse<UpdateInforDTO>> call, Response<GeneralResponse<UpdateInforDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    UpdateInforDTO user = response.body().getData();
+                    if (user != null) {
+                        tv_star_nguyet.setText(user.getFullName());
+                    }
+                } else {
+                    Toast.makeText(UserInfoActivity.this, "Lỗi khi lấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GeneralResponse<UpdateInforDTO>> call, Throwable t) {
+                Toast.makeText(UserInfoActivity.this, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
