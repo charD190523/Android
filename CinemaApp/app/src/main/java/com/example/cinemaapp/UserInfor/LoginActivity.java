@@ -4,6 +4,7 @@ package com.example.cinemaapp.UserInfor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,8 @@ import com.example.cinemaapp.dto.request.SignInRequestDTO;
 import com.example.cinemaapp.factory.GeneralResponse;
 import com.example.cinemaapp.fragment.UserInfoActivity;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.Objects;
 
 import retrofit2.Response;
 
@@ -56,15 +59,19 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(retrofit2.Call<GeneralResponse<String>> call, Response<GeneralResponse<String>> response) {
                         if (response.isSuccessful()) {
                             GeneralResponse<String> generalResponse = response.body();
-                        if (generalResponse != null) {
-                            String token = generalResponse.getData();
-                            saveToken(token);
-                            Toast.makeText(LoginActivity.this, "Login Succesfully!", Toast.LENGTH_SHORT).show();
-                        }
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish(); // Đóng LoginActivity
+                            if (generalResponse != null && !Objects.equals(generalResponse.getData(), "Invalid username or password")) {
+                                String token = generalResponse.getData();
+                                Log.d("Token: ", token);
+                                saveToken(token);
+                                Toast.makeText(LoginActivity.this, "Login Succesfully!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish(); // Đóng LoginActivity
+                            }
+                            else {
+                                Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                     @Override
