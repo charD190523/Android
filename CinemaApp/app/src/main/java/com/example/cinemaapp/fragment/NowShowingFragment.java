@@ -47,13 +47,14 @@ public class NowShowingFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         movies = new ArrayList<>();
-        fetchMoviesFromApi();
-
         adapter = new MovieCardAdapter(getContext(), movies);
         recyclerView.setAdapter(adapter);
 
+        fetchMoviesFromApi(); // Gọi API sau khi đã set adapter
+
         return view;
     }
+
 
     private void fetchMoviesFromApi() {
         MovieApi movieApi = APIClient.getClient().create(MovieApi.class);
