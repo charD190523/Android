@@ -1,6 +1,8 @@
 package com.example.cinemaapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.cinemaapp.R;
+import com.example.cinemaapp.api.MovieApi;
+import com.example.cinemaapp.dto.MovieDetailDTO;
+import com.example.cinemaapp.factory.GeneralResponse;
 import com.example.cinemaapp.model.Movie;
+import com.example.cinemaapp.client.APIClient;
+import com.example.cinemaapp.activity.MovieDetailActivity;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.MovieViewHolder> {
 
@@ -39,11 +50,11 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = movieList.get(position);
         holder.movie_name.setText(movie.getMovie_name());
+        Integer id = movie.getId();
         String[] timeParts = movie.getDuration().split(":");
         int totalMinutes = Integer.parseInt(timeParts[0]) * 60 + Integer.parseInt(timeParts[1]);
         holder.duration.setText(totalMinutes + " phút");
         holder.required_age.setText(movie.getRequired_age() + "+");
-        Glide.with(context).load(movie.getImage_url()).into(holder.image_url);
         Glide.with(context).load(movie.getImage_url()).into(holder.image_url);
 
         if (movie.isAvailable()) {
@@ -52,9 +63,60 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
             holder.btnBooking.setVisibility(View.GONE);
         }
 
+        // Xử lý sự kiện nhấn nút "Đặt vé"
         holder.btnBooking.setOnClickListener(v -> {
             Toast.makeText(context, "Đặt vé: " + movie.getMovie_name(), Toast.LENGTH_SHORT).show();
             // TODO: chuyển sang màn hình đặt vé
+        });
+
+        // Xử lý sự kiện nhấn vào ảnh để mở màn hình chi tiết phim
+        holder.image_url.setOnClickListener(v -> {
+            // 1. Gửi tên phim đến backend
+            MovieApi movieApi = APIClient.getClient().create(MovieApi.class);
+
+            movieApi.sendMovieId(id).enqueue(new Callback<GeneralResponse<MovieDetailDTO>>() {
+                @Override
+                public void onResponse(Call<GeneralResponse<MovieDetailDTO>> call, Response<GeneralResponse<MovieDetailDTO>> response) {
+                    MovieDetailDTO movieDetail = response.body().getData();
+                    if (movieDetail != null) {
+                        Log.d("MovieDetailActivity", "Genre: " + movieDetail.getGenre());
+                        Log.d("MovieDetailActivity", "Description: " + movieDetail.getDescription());
+                        Log.d("MovieDetailActivity", "Director: " + movieDetail.getDirector());
+                        Log.d("MovieDetailActivity", "Actor: " + movieDetail.getActor());
+                    }
+                    // ✅ Thành công
+                    Toast.makeText(context, "Đã gửi id phim tới backend " + id, Toast.LENGTH_SHORT).show();
+                    // 2. Mở MovieDetailActivity
+                    Intent intent = new Intent(context, MovieDetailActivity.class);
+                    intent.putExtra("MOVIE_GENRE", movieDetail.getGenre() );
+                    intent.putExtra("MOVIE_DESCRIPTION", movieDetail.getDescription());
+                    intent.putExtra("MOVIE_DIRECTOR", movieDetail.getDirector());
+                    intent.putExtra("MOVIE_ACTOR", movieDetail.getActor());
+                    intent.putExtra("MOVIE_ID", movie.getMovie_name());
+                    intent.putExtra("MOVIE_IMAGE_URL", movie.getImage_url());
+                    intent.putExtra("MOVIE_NAME", movie.getMovie_name());
+                    intent.putExtra("MOVIE_DURATION", totalMinutes);
+                    intent.putExtra("MOVIE_REQUIRED_AGE", movie.getRequired_age());
+                    intent.putExtra("MOVIE_AVAILABLE", movie.isAvailable());
+                    context.startActivity(intent);
+                }
+
+                @Override
+                public void onFailure(Call<GeneralResponse<MovieDetailDTO>> call, Throwable t) {
+                    // ❌ Thất bại
+                    Toast.makeText(context, "Gửi thất bại: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    // Vẫn mở activity dù gửi lỗi
+                    Intent intent = new Intent(context, MovieDetailActivity.class);
+                    intent.putExtra("MOVIE_ID", movie.getMovie_name());
+                    intent.putExtra("MOVIE_IMAGE_URL", movie.getImage_url());
+                    intent.putExtra("MOVIE_NAME", movie.getMovie_name());
+                    intent.putExtra("MOVIE_DURATION", totalMinutes);
+                    intent.putExtra("MOVIE_REQUIRED_AGE", movie.getRequired_age());
+                    intent.putExtra("MOVIE_AVAILABLE", movie.isAvailable());
+                    context.startActivity(intent);
+                }
+            });
         });
     }
 
@@ -78,4 +140,3 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
         }
     }
 }
-
