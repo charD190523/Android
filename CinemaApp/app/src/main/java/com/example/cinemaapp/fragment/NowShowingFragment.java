@@ -20,6 +20,7 @@ import com.example.cinemaapp.api.MovieApi;
 import com.example.cinemaapp.client.APIClient;
 import com.example.cinemaapp.dto.MovieResponse;
 import com.example.cinemaapp.dto.UpdateInforDTO;
+import com.example.cinemaapp.dto.ViewMovieDTO;
 import com.example.cinemaapp.factory.GeneralResponse;
 import com.example.cinemaapp.model.Movie;
 
@@ -36,7 +37,7 @@ public class NowShowingFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private MovieCardAdapter adapter;
-    private List<Movie> movies;
+    private List<ViewMovieDTO> movies;
 
     @Nullable
     @Override
@@ -58,14 +59,14 @@ public class NowShowingFragment extends Fragment {
 
     private void fetchMoviesFromApi() {
         MovieApi movieApi = APIClient.getClient().create(MovieApi.class);
-        movieApi.getMovies().enqueue(new retrofit2.Callback<MovieResponse>(){
+        movieApi.getMovies().enqueue(new retrofit2.Callback<GeneralResponse<List<ViewMovieDTO>>>(){
             @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+            public void onResponse(Call<GeneralResponse<List<ViewMovieDTO>>> call, Response<GeneralResponse<List<ViewMovieDTO>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Movie> movieList = response.body().getData();
+                    List<ViewMovieDTO> movieList = response.body().getData();
                     movies.clear();
-                    for (Movie movie : movieList) {
-                        if (movie.isAvailable()) {
+                    for (ViewMovieDTO movie : movieList) {
+                        if (movie.getAvailable()) {
                             movies.add(movie);
                         }
                     }
@@ -76,7 +77,7 @@ public class NowShowingFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
+            public void onFailure(Call<GeneralResponse<List<ViewMovieDTO>>> call, Throwable t) {
                 new AlertDialog.Builder(getContext())
                         .setTitle("Lỗi")
                         .setMessage("Lỗi tải phim: " + t.getMessage())

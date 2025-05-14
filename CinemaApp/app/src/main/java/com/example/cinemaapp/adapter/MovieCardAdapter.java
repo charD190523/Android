@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.example.cinemaapp.R;
 import com.example.cinemaapp.api.MovieApi;
 import com.example.cinemaapp.dto.MovieDetailDTO;
+import com.example.cinemaapp.dto.ViewMovieDTO;
 import com.example.cinemaapp.factory.GeneralResponse;
 import com.example.cinemaapp.model.Movie;
 import com.example.cinemaapp.client.APIClient;
@@ -31,10 +32,10 @@ import retrofit2.Response;
 
 public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.MovieViewHolder> {
 
-    private final List<Movie> movieList;
+    private final List<ViewMovieDTO> movieList;
     private final Context context;
 
-    public MovieCardAdapter(Context context, List<Movie> movieList) {
+    public MovieCardAdapter(Context context, List<ViewMovieDTO> movieList) {
         this.context = context;
         this.movieList = movieList;
     }
@@ -48,16 +49,16 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        Movie movie = movieList.get(position);
-        holder.movie_name.setText(movie.getMovie_name());
+        ViewMovieDTO movie = movieList.get(position);
+        holder.movie_name.setText(movie.getMovieName());
         Integer id = movie.getId();
-        String[] timeParts = movie.getDuration().split(":");
+        String[] timeParts = String.valueOf(movie.getDuration()).split(":");
         int totalMinutes = Integer.parseInt(timeParts[0]) * 60 + Integer.parseInt(timeParts[1]);
         holder.duration.setText(totalMinutes + " phút");
-        holder.required_age.setText(movie.getRequired_age() + "+");
-        Glide.with(context).load(movie.getImage_url()).into(holder.image_url);
+        holder.required_age.setText(movie.getRequiredAge() + "+");
+        Glide.with(context).load(movie.getImageUrl()).into(holder.image_url);
 
-        if (movie.isAvailable()) {
+        if (movie.getAvailable()) {
             holder.btnBooking.setVisibility(View.VISIBLE);
         } else {
             holder.btnBooking.setVisibility(View.GONE);
@@ -65,7 +66,7 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
 
         // Xử lý sự kiện nhấn nút "Đặt vé"
         holder.btnBooking.setOnClickListener(v -> {
-            Toast.makeText(context, "Đặt vé: " + movie.getMovie_name(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Đặt vé: " + movie.getMovieName(), Toast.LENGTH_SHORT).show();
             // TODO: chuyển sang màn hình đặt vé
         });
 
@@ -92,12 +93,12 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
                     intent.putExtra("MOVIE_DESCRIPTION", movieDetail.getDescription());
                     intent.putExtra("MOVIE_DIRECTOR", movieDetail.getDirector());
                     intent.putExtra("MOVIE_ACTOR", movieDetail.getActor());
-                    intent.putExtra("MOVIE_ID", movie.getMovie_name());
-                    intent.putExtra("MOVIE_IMAGE_URL", movie.getImage_url());
-                    intent.putExtra("MOVIE_NAME", movie.getMovie_name());
+                    intent.putExtra("MOVIE_ID", movie.getMovieName());
+                    intent.putExtra("MOVIE_IMAGE_URL", movie.getImageUrl());
+                    intent.putExtra("MOVIE_NAME", movie.getMovieName());
                     intent.putExtra("MOVIE_DURATION", totalMinutes);
-                    intent.putExtra("MOVIE_REQUIRED_AGE", movie.getRequired_age());
-                    intent.putExtra("MOVIE_AVAILABLE", movie.isAvailable());
+                    intent.putExtra("MOVIE_REQUIRED_AGE", movie.getRequiredAge());
+                    intent.putExtra("MOVIE_AVAILABLE", movie.getAvailable());
                     context.startActivity(intent);
                 }
 
@@ -108,12 +109,12 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
 
                     // Vẫn mở activity dù gửi lỗi
                     Intent intent = new Intent(context, MovieDetailActivity.class);
-                    intent.putExtra("MOVIE_ID", movie.getMovie_name());
-                    intent.putExtra("MOVIE_IMAGE_URL", movie.getImage_url());
-                    intent.putExtra("MOVIE_NAME", movie.getMovie_name());
+                    intent.putExtra("MOVIE_ID", movie.getMovieName());
+                    intent.putExtra("MOVIE_IMAGE_URL", movie.getImageUrl());
+                    intent.putExtra("MOVIE_NAME", movie.getMovieName());
                     intent.putExtra("MOVIE_DURATION", totalMinutes);
-                    intent.putExtra("MOVIE_REQUIRED_AGE", movie.getRequired_age());
-                    intent.putExtra("MOVIE_AVAILABLE", movie.isAvailable());
+                    intent.putExtra("MOVIE_REQUIRED_AGE", movie.getRequiredAge());
+                    intent.putExtra("MOVIE_AVAILABLE", movie.getAvailable());
                     context.startActivity(intent);
                 }
             });
