@@ -1,5 +1,6 @@
 package com.example.cinemaapp.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,15 +16,17 @@ import com.example.cinemaapp.R;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
-    private ImageView bannerImage;
+    private ImageView bannerImage, backButton;
     private TextView movieTitle, movieGenre,movieDuration, movieDescription, movieDirector, movieActor;
     private Button bookTicketButton;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
+        backButton = findViewById(R.id.btnBackMovieDetail);
         // Ánh xạ các thành phần giao diện
         bannerImage = findViewById(R.id.image_url);
         movieTitle = findViewById(R.id.movie_name);
@@ -47,7 +50,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         boolean isAvailable = getIntent().getBooleanExtra("MOVIE_AVAILABLE", false);
         // Cập nhật giao diện với dữ liệu nhận được
         updateUI(movieGenre, movieDescription, movieDirector, movieActor, movieId, movieImageUrl, movieName, movieDuration, movieRequiredAge, isAvailable);
-
+       backButton.setOnClickListener(v -> finish());
         // Xử lý sự kiện nhấn nút "Đặt vé"
         bookTicketButton.setOnClickListener(v -> {
             Toast.makeText(this, "Chuyển hướng đến màn hình đặt vé...", Toast.LENGTH_SHORT).show();

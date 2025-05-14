@@ -1,13 +1,18 @@
 package com.example.cinemaapp.Schedule;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,12 +21,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cinemaapp.R;
+import com.example.cinemaapp.api.ShowtimeAPI;
+import com.example.cinemaapp.client.APIClient;
+import com.example.cinemaapp.dto.MovieShowDTO;
+import com.example.cinemaapp.dto.ShowtimeDTO;
+import com.example.cinemaapp.factory.GeneralResponse;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class LichChieuActivity extends AppCompatActivity {
@@ -32,11 +46,13 @@ public class LichChieuActivity extends AppCompatActivity {
     LinearLayout ngayChieuLinearLayout;
     RecyclerView lichChieuRecyclerView;
     LichChieuPhimAdapter lichChieuAdapter;
-    List<LichChieuPhimAdapter.LichChieuPhimItem> lichChieuList; // Sử dụng đúng model class
+    List<LichChieuPhimAdapter.LichChieuPhimItem> lichChieuList;
     LocalDate selectedDate = LocalDate.now();
     List<TextView> dayTextViews = new ArrayList<>();
-    DateTimeFormatter dateFormatterForIntent = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Khai báo ở cấp độ class
+    DateTimeFormatter dateFormatterForIntent = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter dateFormatterForBackend = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     ImageView btnBackLichChieu;
+    String tenRap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,35 +66,33 @@ public class LichChieuActivity extends AppCompatActivity {
         lichChieuRecyclerView = findViewById(R.id.lichChieuRecyclerView);
         lichChieuRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         btnBackLichChieu = findViewById(R.id.btnBackLichChieu);
-        btnBackLichChieu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish(); // Đóng Activity hiện tại và quay lại Activity trước
-            }
-        });
+        btnBackLichChieu.setOnClickListener(v -> finish());
+
         // Lấy thông tin rạp từ Intent
         Intent intent = getIntent();
-        String tenRap = intent.getStringExtra("tenRap");
+        tenRap = intent.getStringExtra("tenRap");
         String diaChiRap = intent.getStringExtra("diaChiRap");
-        int anhBiaRap = intent.getIntExtra("anhBiaRap", R.drawable.sample_rap); // Nhận ID ảnh bìa (có giá trị mặc định)
+        int anhBiaRap = intent.getIntExtra("anhBiaRap", R.drawable.sample_rap);
 
         tenRapTextView.setText(tenRap);
         diaChiRapTextView.setText(diaChiRap);
-        rapCoverImageView.setImageResource(anhBiaRap); // Hiển thị ảnh bìa
+        rapCoverImageView.setImageResource(anhBiaRap);
 
-        // Tạo và hiển thị các ô ngày trong 7 ngày tới
-        populateNgayChieu();
-        String ngayChieuFormatted = dateFormatterForIntent.format(selectedDate);
-
-        // Tạo dữ liệu lịch chiếu (ví dụ: ngẫu nhiên cho ngày hiện tại)
-        lichChieuList = generateLichChieuPhim(selectedDate);
-        lichChieuAdapter = new LichChieuPhimAdapter(this, lichChieuList, tenRap, ngayChieuFormatted); // Truyền context vào Adapter
+        // Khởi tạo danh sách lịch chiếu
+        lichChieuList = new ArrayList<>();
+        lichChieuAdapter = new LichChieuPhimAdapter(this, lichChieuList, tenRap, dateFormatterForIntent.format(selectedDate));
         lichChieuRecyclerView.setAdapter(lichChieuAdapter);
+
+        // Tạo và hiển thị các ô ngày
+        populateNgayChieu();
+
+        // Lấy lịch chiếu cho ngày hiện tại
+        fetchLichChieu(selectedDate);
     }
 
     private void populateNgayChieu() {
         LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd"); // Khai báo và khởi tạo ở đây
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd");
         DateTimeFormatter dayOfWeekFormatter = DateTimeFormatter.ofPattern("E");
 
         for (int i = 0; i < 7; i++) {
@@ -92,59 +106,75 @@ public class LichChieuActivity extends AppCompatActivity {
             ngayTextView.setOnClickListener(v -> {
                 selectedDate = finalDate;
                 updateSelectedDay();
-                lichChieuList = generateLichChieuPhim(selectedDate);
-                lichChieuAdapter.setLichChieuList(lichChieuList);
+                fetchLichChieu(finalDate);
             });
 
             ngayChieuLinearLayout.addView(dayView);
         }
-        updateSelectedDay(); // Chọn ngày hiện tại ban đầu
+        updateSelectedDay();
+    }
+
+    private void fetchLichChieu(LocalDate showDate) {
+        ShowtimeAPI showtimeAPI = APIClient.getClient().create(ShowtimeAPI.class);
+        String formattedDate = dateFormatterForBackend.format(showDate);
+
+        Log.d("LichChieu", "Fetching showtimes for date: " + formattedDate);
+        showtimeAPI.getMovieShowtimes(LocalDate.parse(formattedDate)).enqueue(new Callback<GeneralResponse<List<MovieShowDTO>>>() {
+            @Override
+            public void onResponse(Call<GeneralResponse<List<MovieShowDTO>>> call, Response<GeneralResponse<List<MovieShowDTO>>> response) {
+                Log.d("LichChieu", "API response: " + (response.isSuccessful() ? "Success" : "Failed, code: " + response.code()));
+                if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
+                    List<MovieShowDTO> movieShowDTOs = response.body().getData();
+                    Log.d("LichChieu", "Movies received: " + movieShowDTOs.get(0));
+                    updateLichChieuList(movieShowDTOs);
+                } else {
+                    Log.d("LichChieu", "No data or response failed");
+                    Toast.makeText(LichChieuActivity.this, "Không có lịch chiếu cho ngày này", Toast.LENGTH_SHORT).show();
+                    updateLichChieuList(new ArrayList<>());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GeneralResponse<List<MovieShowDTO>>> call, Throwable t) {
+                Log.e("LichChieu", "API failure: " + t.getMessage());
+                Toast.makeText(LichChieuActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                updateLichChieuList(new ArrayList<>());
+            }
+        });
+    }
+
+    private void updateLichChieuList(List<MovieShowDTO> movieShowDTOs) {
+        lichChieuList.clear();
+        Log.d("LichChieu", "Updating lichChieuList with " + movieShowDTOs.size() + " movies");
+        for (MovieShowDTO movieShow : movieShowDTOs) {
+            List<String> gioChieuList = new ArrayList<>();
+            if (movieShow.getShowtimes() != null) {
+                for (ShowtimeDTO showtime : movieShow.getShowtimes()) {
+                    String startTime = showtime.getStartTime();
+                    gioChieuList.add(startTime);
+                }
+            }
+            Log.d("LichChieu", "Movie: " + (movieShow.getMovieName() != null ? movieShow.getMovieName() : "null") + ", Showtimes: " + gioChieuList.size());
+            lichChieuList.add(new LichChieuPhimAdapter.LichChieuPhimItem(
+                    movieShow.getMovieName() != null ? movieShow.getMovieName() : "",
+                    gioChieuList
+            ));
+        }
+        lichChieuAdapter.setLichChieuList(lichChieuList);
+        lichChieuAdapter.notifyDataSetChanged();
     }
 
     private void updateSelectedDay() {
         for (int i = 0; i < dayTextViews.size(); i++) {
             TextView dayTextView = dayTextViews.get(i);
-            LocalDate date = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                date = LocalDate.now().plusDays(i);
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (date.isEqual(selectedDate)) {
-                    dayTextView.setBackgroundColor(ContextCompat.getColor(this, R.color.green)); // Màu xanh bạn muốn
-                } else {
-                    dayTextView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-                }
+            LocalDate date = LocalDate.now().plusDays(i);
+            if (date.isEqual(selectedDate)) {
+                dayTextView.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
+            } else {
+                dayTextView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
             }
         }
     }
 
-    private List<LichChieuPhimAdapter.LichChieuPhimItem> generateLichChieuPhim(LocalDate date) {
-        List<LichChieuPhimAdapter.LichChieuPhimItem> items = new ArrayList<>();
-        Random random = new Random();
-        int numMovies = random.nextInt(3) + 1; // 1 đến 3 phim
 
-        for (int i = 0; i < numMovies; i++) {
-            String tenPhim = getRandomTenPhim();
-            List<String> gioChieu = generateGioChieu2D(random);
-            items.add(new LichChieuPhimAdapter.LichChieuPhimItem(tenPhim, "2D", gioChieu)); // Thêm định dạng 2D
-        }
-        return items;
-    }
-
-    private String getRandomTenPhim() {
-        String[] tenPhims = {"Địa đạo: Mật trời trong bóng tối", "A Minecraft Movie", "DROP: Buổi hẹn hò kinh hoàng", "PANOR: Tà thuật huyết ngải"};
-        Random random = new Random();
-        return tenPhims[random.nextInt(tenPhims.length)];
-    }
-
-    private List<String> generateGioChieu2D(Random random) {
-        List<String> gioChieu = new ArrayList<>();
-        int soSuat = random.nextInt(3) + 1; // 1 đến 3 suất chiếu
-        int gioBatDau = 10 + random.nextInt(10); // Giờ bắt đầu từ 10 đến 19
-        for (int i = 0; i < soSuat; i++) {
-            int phut = random.nextInt(60);
-            gioChieu.add(String.format("%02d:%02d", gioBatDau + i * 2, phut)); // Giả sử cách nhau 2 tiếng
-        }
-        return gioChieu;
-    }
 }

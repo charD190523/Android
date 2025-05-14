@@ -23,12 +23,21 @@
         android:text="2D"
         android:layout_marginTop="4dp" />
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:scrollbars="horizontal"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="4dp"
+        android:scrollbarThumbHorizontal="@android:color/white">
     <LinearLayout
         android:id="@+id/layoutGioChieu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="8dp" />
+    </HorizontalScrollView>
 
     <View
         android:layout_width="match_parent"

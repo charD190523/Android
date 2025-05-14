@@ -5,6 +5,19 @@
     android:layout_height="match_parent"
     android:background="#212121"
     android:padding="16dp">
+    <ImageView
+        android:id="@+id/btnBackMovieDetail"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_back"
+        android:contentDescription="Back"
+        android:padding="8dp"
+        android:elevation="8dp"
+        app:tint="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp" />
 
     <!-- ScrollView for scrollable content -->
     <ScrollView
@@ -20,7 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <!-- Banner Image -->
             <ImageView
                 android:id="@+id/image_url"
@@ -191,15 +203,15 @@
     <!-- Fixed Book Ticket Button -->
     <Button
         android:id="@+id/bookTicketButton"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="ĐẶT VÉ"
-        android:backgroundTint="#4CAF50"
-        android:textColor="#FFFFFF"
+        android:text="🎟 Đặt vé"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/bhd_green"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="16dp" />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

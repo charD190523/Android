@@ -21,4 +21,5 @@ public interface MovieApi {
     Call<GeneralResponse<List<ViewMovieDTO>>> getMovies();
     @GET("api/movie/get-detail")
     Call<GeneralResponse<MovieDetailDTO>> sendMovieId(@Query("movieId")Integer movieId);
+
 }
