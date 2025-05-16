@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".UserInfor.DetailsActivity" />
+        <service android:name=".book_ticket_home.TimerService" />
         <activity android:name=".fragment.UserInfoActivity" />
         <activity android:name=".UserInfor.RewardsActivity" />
         <activity android:name=".UserInfor.UpdateInfoActivity" />
@@ -41,6 +42,15 @@
             android:exported="false"/>
         <activity android:name=".Schedule.DatDoAnActivity"
             android:exported="false"/>
+        <activity android:name=".book_ticket_home.ThanhToanActivity2"
+            android:exported="false"/>
+        <activity android:name=".book_ticket_home.DatDoAnActivity2"
+            android:exported="false"/>
+        <activity android:name=".book_ticket_home.ChonGheActivity2"
+            android:exported="false"/>
+        <activity android:name=".book_ticket_home.LichChieuPhimActivity"
+            android:exported="false"/>
+
         <service android:name=".Schedule.TimerService" />
         <activity android:name=".Schedule.ThongBaoActivity" />
         <activity android:name=".Schedule.ThanhToanActivity"
