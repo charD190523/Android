@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.cinemaapp.R;
+import com.example.cinemaapp.activity.ShowtimeMovieActivity;
 import com.example.cinemaapp.api.MovieApi;
 import com.example.cinemaapp.dto.MovieDetailDTO;
 import com.example.cinemaapp.dto.ViewMovieDTO;
@@ -66,7 +67,8 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
 
         // Xử lý sự kiện nhấn nút "Đặt vé"
         holder.btnBooking.setOnClickListener(v -> {
-            Toast.makeText(context, "Đặt vé: " + movie.getMovieName(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, ShowtimeMovieActivity.class);
+            context.startActivity(intent);
             // TODO: chuyển sang màn hình đặt vé
         });
 
