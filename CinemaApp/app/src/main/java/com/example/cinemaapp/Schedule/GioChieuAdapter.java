@@ -42,7 +42,7 @@ public class GioChieuAdapter extends RecyclerView.Adapter<GioChieuAdapter.ViewHo
             // Xử lý sự kiện khi giờ chiếu được nhấn
             Intent intent = new Intent(context, ChonGheActivity.class);
             intent.putExtra("tenPhim", tenPhim);
-            intent.putExtra("gioChieu", gioChieu);
+            intent.putExtra("gioChieu", gioChieu.substring(0, 5));
             context.startActivity(intent);
         });
     }

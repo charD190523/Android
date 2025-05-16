@@ -3,6 +3,7 @@ package com.example.cinemaapp.model;
 import java.sql.Time;
 
 public class Movie {
+    private Integer id;
     private String imageUrl;
     private String movieName;
     private String duration;
@@ -10,6 +11,9 @@ public class Movie {
     private boolean isAvailable;
 
     // Getters
+    public Integer getId() {
+        return id;
+    }
     public String getImage_url() {
         return imageUrl;
     }

@@ -69,9 +69,32 @@ public class HomeFragment extends Fragment {
         movieTabAdapter = new MovieTabAdapter(requireActivity());
         viewPager2.setAdapter(movieTabAdapter);
 
+        // Tắt khả năng vuốt ngang của ViewPager2
+        viewPager2.setUserInputEnabled(false);
+
+        // Gắn TabLayoutMediator để hiển thị tiêu đề tab
         new TabLayoutMediator(tabLayout, viewPager2,
                 (tab, position) -> tab.setText(position == 0 ? "Đang Chiếu" : "Sắp Chiếu")
         ).attach();
+
+        // Xử lý sự kiện nhấn vào tab để chuyển đổi
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // Khi nhấn vào tab, chuyển ViewPager2 đến tab tương ứng
+                viewPager2.setCurrentItem(tab.getPosition(), false);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Không cần xử lý
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Không cần xử lý
+            }
+        });
 
         return view;
     }
