@@ -53,7 +53,7 @@ public class BookTicketFilmActivity extends AppCompatActivity {
         // Lấy dữ liệu phim từ Intent
         Intent intent = getIntent();
         String tenPhim = intent.getStringExtra("tenPhim");
-        int anhBiaPhim = intent.getIntExtra("anhBiaPhim", R.drawable.latmat8);  // Đặt ảnh mặc định nếu không có
+        int anhBiaPhim = intent.getIntExtra("anhBiaPhim", R.drawable.a_minecraft_movie);  // Đặt ảnh mặc định nếu không có
 
         tenPhimTextView.setText(tenPhim);
         phimCoverImageView.setImageResource(anhBiaPhim);
