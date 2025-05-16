@@ -64,11 +64,11 @@ public class RapAdapter extends RecyclerView.Adapter<RapAdapter.RapViewHolder> {
         holder.tenRapContainer.setOnClickListener(v -> {
             if (holder.gioChieuContainer.getVisibility() == View.GONE) {
                 holder.gioChieuContainer.setVisibility(View.VISIBLE);
-                holder.expandIndicator.setImageResource(R.drawable.ic_arrow_drop_down); // Mũi tên lên khi mở
+                holder.expandIndicator.setImageResource(R.drawable.ic_arrow_back); // Mũi tên lên khi mở
                 hienThiGioChieu(holder, position);
             } else {
                 holder.gioChieuContainer.setVisibility(View.GONE);
-                holder.expandIndicator.setImageResource(R.drawable.ic_arrow_drop_down); // Mũi tên xuống khi đóng
+                holder.expandIndicator.setImageResource(R.drawable.ic_arrow_back); // Mũi tên xuống khi đóng
                 holder.listGioChieu.removeAllViews();
             }
         });
