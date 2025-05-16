@@ -4,13 +4,22 @@ import java.util.List;
 
 public class MovieShowDTO {
     private Integer id;
+    private String imageUrl;
     private String movieName;
     private List<ShowtimeDTO> showtimes;
 
-    public MovieShowDTO(Integer id, String movieName, List<ShowtimeDTO> showtimes) {
+    public MovieShowDTO(Integer id, String imageUrl, String movieName, List<ShowtimeDTO> showtimes) {
         this.id = id;
+        this.imageUrl = imageUrl;
         this.movieName = movieName;
         this.showtimes = showtimes;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Integer getId() {

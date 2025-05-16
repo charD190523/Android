@@ -60,6 +60,8 @@ public class DatDoAnActivity extends AppCompatActivity {
     private Button btnHoanTatChonGhe; // ID này giống với nút ở layout, chúng ta sẽ dùng tạm
 
     private String tenPhim;
+    private Integer IdPhim;
+    private String imageUrl;
     private int soLuongGhe = 0;
     private int tongTienVe = 0;
     private int tongTienDoAn = 0;
@@ -204,7 +206,8 @@ public class DatDoAnActivity extends AppCompatActivity {
                     + " | viTri=" + intent.getStringExtra("viTriGhe"));
             Log.d("DEBUG_GHE", "   soLuongGhe key cũ = "
                     + intent.getIntExtra("soLuongGhe", -1));
-
+            IdPhim = intent.getIntExtra("idPhim", 0);
+            imageUrl = intent.getStringExtra("imageUrl");
             soLuongGhe = intent.getIntExtra("soLuongVe", 0);
             tongTienVe = intent.getIntExtra("tongTienVe", 0);
             remainingTimeInMillisDatDoAn = intent.getLongExtra("thoiGianConLai", 0);
@@ -254,6 +257,8 @@ public class DatDoAnActivity extends AppCompatActivity {
             Intent intentThanhToan = new Intent(DatDoAnActivity.this, ThanhToanActivity.class);
             intentThanhToan.putExtra("tongTienThanhToan", tongTienThanhToan);
             intentThanhToan.putExtra("tenPhim", tenPhim);
+            intentThanhToan.putExtra("idPhim", IdPhim);
+            intentThanhToan.putExtra("imageUrl", imageUrl);
             intentThanhToan.putExtra("soLuongVe", soLuongGhe);
             intentThanhToan.putExtra("viTriGhe", viTriGhe); // Đảm bảo bạn đã lấy 'viTriGhe' ở onCreate
             intentThanhToan.putExtra("tongTienVe", tongTienVe);

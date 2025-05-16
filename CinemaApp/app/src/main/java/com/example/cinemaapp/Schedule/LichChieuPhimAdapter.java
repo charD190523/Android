@@ -67,8 +67,10 @@ public class LichChieuPhimAdapter extends RecyclerView.Adapter<LichChieuPhimAdap
 
             btnGio.setOnClickListener(v -> {
                 Intent intent = new Intent(context, ChonGheActivity.class);
+                intent.putExtra("idPhim", item.getId());
+                intent.putExtra("imageUrl", item.getImageUrl());
                 intent.putExtra("tenPhim", item.getTenPhim());
-                intent.putExtra("gioChieu", String.valueOf(gioChieu));
+                intent.putExtra("gioChieu", gioChieu.substring(0, 5));
                 intent.putExtra("tenRap", tenRap);
                 intent.putExtra("ngayChieu", ngayChieu);
                 context.startActivity(intent);
@@ -93,12 +95,24 @@ public class LichChieuPhimAdapter extends RecyclerView.Adapter<LichChieuPhimAdap
     }
 
     public static class LichChieuPhimItem {
+        private Integer id;
+        private String imageUrl;
         private String tenPhim;
         private List<String> gioChieu;
 
-        public LichChieuPhimItem(String tenPhim, List<String> gioChieu) {
+        public LichChieuPhimItem(Integer id, String imageUrl, String tenPhim, List<String> gioChieu) {
+            this.id = id;
+            this.imageUrl = imageUrl;
             this.tenPhim = tenPhim;
             this.gioChieu = gioChieu;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
         }
 
         public String getTenPhim() {

@@ -28,6 +28,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.bumptech.glide.Glide;
 import com.example.cinemaapp.R;
 
 import java.util.ArrayList;
@@ -63,6 +64,8 @@ public class ThanhToanActivity extends AppCompatActivity {
 
     // Các biến dữ liệu
     private String tenPhim;
+    private int IdPhim;
+    private String imageUrl;
     private int soLuongGhe;
     private int tongTienVe;
     private int tongTienDoAn = 0; // Khởi tạo là 0
@@ -126,7 +129,6 @@ public class ThanhToanActivity extends AppCompatActivity {
 
         // Ánh xạ các view
         moviePosterImageView = findViewById(R.id.movie_poster);
-        String tenPhim = getIntent().getStringExtra("tenPhim");
         tvTimerThanhToan = findViewById(R.id.tvTimerThanhToan);
         btnBackThanhToan = findViewById(R.id.btnBackThanhToan);
         termsConditionsCheckbox = findViewById(R.id.terms_conditions);
@@ -152,24 +154,6 @@ public class ThanhToanActivity extends AppCompatActivity {
         paymentMomoLayout = findViewById(R.id.payment_momo_layout);
         paymentZaloPayLayout = findViewById(R.id.payment_zalopay_layout);
         paymentShopeePayLayout = findViewById(R.id.payment_shopeepay_layout);
-
-        if (tenPhim != null) {
-            if (tenPhim.equals("Địa đạo: Mật trời trong bóng tối")) {
-                moviePosterImageView.setImageResource(R.drawable.dia_dao_mat_troi);
-            } else if (tenPhim.equals("A Minecraft Movie")) {
-                moviePosterImageView.setImageResource(R.drawable.a_minecraft_movie);
-            } else if (tenPhim.equals("DROP: Buổi hẹn hò kinh hoàng")) {
-                moviePosterImageView.setImageResource(R.drawable.drop_buoi_hen_ho);
-            } else if (tenPhim.equals("PANOR: Tà thuật huyết ngải")) {
-                moviePosterImageView.setImageResource(R.drawable.panor_ta_thuat);
-            } else {
-                // Ảnh mặc định nếu không tìm thấy tên phim trùng khớp
-                moviePosterImageView.setImageResource(R.drawable.default_poster);
-            }
-        } else {
-            // Ảnh mặc định nếu không nhận được tên phim từ Intent
-            moviePosterImageView.setImageResource(R.drawable.default_poster);
-        }
         // Ban đầu vô hiệu hóa nút thanh toán
         completePaymentButton.setEnabled(false);
         completePaymentButton.setBackgroundTintList(getResources().getColorStateList(android.R.color.darker_gray));
@@ -229,6 +213,8 @@ public class ThanhToanActivity extends AppCompatActivity {
 
         if (extras != null) {
             tenPhim = extras.getString("tenPhim");
+            IdPhim = extras.getInt("idPhim", 0);
+            imageUrl = extras.getString("imageUrl");
             soLuongGhe = extras.getInt("soLuongVe", 0);
             tongTienVe = extras.getInt("tongTienVe", 0);
             tongTienDoAn = extras.getInt("tongTienDoAn", 0);
@@ -248,6 +234,7 @@ public class ThanhToanActivity extends AppCompatActivity {
             }
 
             movieTitleTextView.setText(tenPhim);
+            Glide.with(this).load(imageUrl).into(moviePosterImageView);
             theaterInfoTextView.setText(tenRap);
             showtimeInfoTextView.setText(String.format("%s - %s", ngayChieu, gioChieu));
             seatInfoTextView.setText(String.format("%d vé", soLuongGhe));

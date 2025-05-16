@@ -18,6 +18,8 @@ public class GioChieuAdapter extends RecyclerView.Adapter<GioChieuAdapter.ViewHo
 
     private Context context;
     private List<String> listGioChieu;
+    private Integer IdPhim;
+    private String imageUrl;
     private String tenPhim; // Cần truyền tên phim vào adapter
 
     public GioChieuAdapter(Context context, List<String> listGioChieu, String tenPhim) {
@@ -42,6 +44,8 @@ public class GioChieuAdapter extends RecyclerView.Adapter<GioChieuAdapter.ViewHo
             // Xử lý sự kiện khi giờ chiếu được nhấn
             Intent intent = new Intent(context, ChonGheActivity.class);
             intent.putExtra("tenPhim", tenPhim);
+            intent.putExtra("idPhim", IdPhim);
+            intent.putExtra("imageUrl", imageUrl);
             intent.putExtra("gioChieu", gioChieu.substring(0, 5));
             context.startActivity(intent);
         });

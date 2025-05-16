@@ -156,6 +156,8 @@ public class LichChieuActivity extends AppCompatActivity {
             }
             Log.d("LichChieu", "Movie: " + (movieShow.getMovieName() != null ? movieShow.getMovieName() : "null") + ", Showtimes: " + gioChieuList.size());
             lichChieuList.add(new LichChieuPhimAdapter.LichChieuPhimItem(
+                    movieShow.getId(),
+                    movieShow.getImageUrl(),
                     movieShow.getMovieName() != null ? movieShow.getMovieName() : "",
                     gioChieuList
             ));

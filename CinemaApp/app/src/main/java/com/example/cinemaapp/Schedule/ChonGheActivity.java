@@ -45,7 +45,10 @@ public class ChonGheActivity extends AppCompatActivity {
     private Button btnHoanTatChonGhe;
     private ImageView btnBackChonGhe;
 
+
     private String tenPhim;
+    private Integer IdPhim;
+    private String imageUrl;
     private String gioChieu;
     private String tenRap;
     private String tenPhong;
@@ -111,6 +114,8 @@ public class ChonGheActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             tenPhim = intent.getStringExtra("tenPhim");
+            IdPhim = intent.getIntExtra("idPhim", 0);
+            imageUrl = intent.getStringExtra("imageUrl");
             gioChieu = intent.getStringExtra("gioChieu");
             tenRap = intent.getStringExtra("tenRap");
             tenPhong = "Screen 4";
@@ -147,6 +152,8 @@ public class ChonGheActivity extends AppCompatActivity {
                 Intent intentToDatDoAn = new Intent(ChonGheActivity.this, DatDoAnActivity.class); // Khai báo với tên khác
 
                 intentToDatDoAn.putExtra("tenPhim", tenPhim);
+                intentToDatDoAn.putExtra("idPhim", IdPhim);
+                intentToDatDoAn.putExtra("imageUrl", imageUrl);
                 intentToDatDoAn.putExtra("soLuongVe", soVe);
                 intentToDatDoAn.putExtra("viTriGhe", String.join(", ", gheDaChon));
                 intentToDatDoAn.putExtra("giaVe", giaVe);
