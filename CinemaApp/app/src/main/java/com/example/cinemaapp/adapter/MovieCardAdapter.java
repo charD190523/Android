@@ -67,7 +67,7 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
         // Xử lý sự kiện nhấn nút "Đặt vé"
         holder.btnBooking.setOnClickListener(v -> {
             Intent intent = new Intent(context, ShowtimeHomeActivity.class);
-            intent.putExtra("movieId", id);
+            intent.putExtra("movieId", movie.getId());
             intent.putExtra("movieName", movie.getMovieName());
             intent.putExtra("movieImageUrl", movie.getImageUrl());
             intent.putExtra("movieDuration", totalMinutes);
@@ -95,11 +95,13 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
                     Toast.makeText(context, "Đã gửi id phim tới backend " + id, Toast.LENGTH_SHORT).show();
                     // 2. Mở MovieDetailActivity
                     Intent intent = new Intent(context, MovieDetailActivity.class);
+
                     intent.putExtra("MOVIE_GENRE", movieDetail.getGenre() );
                     intent.putExtra("MOVIE_DESCRIPTION", movieDetail.getDescription());
                     intent.putExtra("MOVIE_DIRECTOR", movieDetail.getDirector());
                     intent.putExtra("MOVIE_ACTOR", movieDetail.getActor());
-                    intent.putExtra("MOVIE_ID", movie.getMovieName());
+                    intent.putExtra("MOVIE_NAME", movie.getMovieName());
+                    intent.putExtra("MOVIE_ID", movie.getId());
                     intent.putExtra("MOVIE_IMAGE_URL", movie.getImageUrl());
                     intent.putExtra("MOVIE_NAME", movie.getMovieName());
                     intent.putExtra("MOVIE_DURATION", totalMinutes);

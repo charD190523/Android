@@ -1,6 +1,7 @@
 package com.example.cinemaapp.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.cinemaapp.R;
+import com.example.cinemaapp.Schedule.ShowtimeHomeActivity;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -42,7 +44,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         String movieDescription = getIntent().getStringExtra("MOVIE_DESCRIPTION");
         String movieDirector = getIntent().getStringExtra("MOVIE_DIRECTOR");
         String movieActor = getIntent().getStringExtra("MOVIE_ACTOR");
-        String movieId = getIntent().getStringExtra("MOVIE_ID");
+        Integer movieId = getIntent().getIntExtra("MOVIE_ID", 0); // Đảm bảo giá trị mặc định là 0 nếu không có dữ liệu")
+        Log.d("MovieDetailActivity", "movieId=" + movieId);
         String movieImageUrl = getIntent().getStringExtra("MOVIE_IMAGE_URL");
         String movieName = getIntent().getStringExtra("MOVIE_NAME");
         int movieDuration = getIntent().getIntExtra("MOVIE_DURATION", 0);
@@ -53,12 +56,18 @@ public class MovieDetailActivity extends AppCompatActivity {
        backButton.setOnClickListener(v -> finish());
         // Xử lý sự kiện nhấn nút "Đặt vé"
         bookTicketButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Chuyển hướng đến màn hình đặt vé...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MovieDetailActivity.this, ShowtimeHomeActivity.class);
+            intent.putExtra("movieId", movieId);
+            intent.putExtra("movieName", movieName);
+            intent.putExtra("movieImageUrl", movieImageUrl);
+            intent.putExtra("movieDuration", movieDuration);
+            intent.putExtra("movieRequiredAge", movieRequiredAge);
+            startActivity(intent);
             // Thêm logic để chuyển sang màn hình đặt vé
         });
     }
 
-    private void updateUI(String genre, String description, String director, String actor, String id, String imageUrl, String name, int duration, int reqiredAge,boolean isAvailable) {
+    private void updateUI(String genre, String description, String director, String actor, Integer id, String imageUrl, String name, int duration, int reqiredAge,boolean isAvailable) {
         Log.d("MovieDetailActivity", "genre=" + genre + ", description=" + description);
 
         // Tải ảnh banner bằng Glide
