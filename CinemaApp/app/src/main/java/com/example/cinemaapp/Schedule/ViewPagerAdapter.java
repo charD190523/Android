@@ -10,7 +10,6 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public ViewPagerAdapter(@NonNull ScheduleFragment fa) {
         super(fa);
     }
-
     @NonNull
     @Override
     public Fragment createFragment(int position) {

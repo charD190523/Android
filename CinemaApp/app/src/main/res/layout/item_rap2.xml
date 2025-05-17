@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#121212">
+
+    <!-- Tên rạp -->
+    <TextView
+        android:id="@+id/tenRapTextView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CGV Aeon Bình Tân"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium" />
+
+    <!-- Định dạng phim -->
+    <TextView
+        android:id="@+id/dinhDangTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2D Digital"
+        android:textColor="#AAAAAA"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif" />
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="#333333" />
+
+    <!-- Label giờ chiếu -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Giờ chiếu:"
+        android:textColor="#CCCCCC"
+        android:textSize="14sp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="sans-serif" />
+
+    <!-- Giờ chiếu dạng nút scroll ngang -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/layoutGioChieu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical" />
+    </HorizontalScrollView>
+
+    <!-- Bottom Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="#222222" />
+
+</LinearLayout>

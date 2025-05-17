@@ -20,6 +20,7 @@ import java.util.List;
 public class TPHCMFragment extends Fragment {
     @Nullable
     @Override
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tphcm, container, false);
         RecyclerView recyclerView = v.findViewById(R.id.recyclerView);

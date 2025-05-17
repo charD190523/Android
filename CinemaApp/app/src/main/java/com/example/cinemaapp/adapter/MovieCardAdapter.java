@@ -16,12 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.cinemaapp.R;
-import com.example.cinemaapp.activity.ShowtimeMovieActivity;
+import com.example.cinemaapp.Schedule.ShowtimeHomeActivity;
 import com.example.cinemaapp.api.MovieApi;
 import com.example.cinemaapp.dto.MovieDetailDTO;
 import com.example.cinemaapp.dto.ViewMovieDTO;
 import com.example.cinemaapp.factory.GeneralResponse;
-import com.example.cinemaapp.model.Movie;
 import com.example.cinemaapp.client.APIClient;
 import com.example.cinemaapp.activity.MovieDetailActivity;
 
@@ -67,7 +66,12 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
 
         // Xử lý sự kiện nhấn nút "Đặt vé"
         holder.btnBooking.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ShowtimeMovieActivity.class);
+            Intent intent = new Intent(context, ShowtimeHomeActivity.class);
+            intent.putExtra("movieId", id);
+            intent.putExtra("movieName", movie.getMovieName());
+            intent.putExtra("movieImageUrl", movie.getImageUrl());
+            intent.putExtra("movieDuration", totalMinutes);
+            intent.putExtra("movieRequiredAge", movie.getRequiredAge());
             context.startActivity(intent);
             // TODO: chuyển sang màn hình đặt vé
         });

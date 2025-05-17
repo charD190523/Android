@@ -118,9 +118,8 @@ public class ChonGheActivity extends AppCompatActivity {
             imageUrl = intent.getStringExtra("imageUrl");
             gioChieu = intent.getStringExtra("gioChieu");
             tenRap = intent.getStringExtra("tenRap");
-            tenPhong = "Screen 4";
             ngayChieu = intent.getStringExtra("ngayChieu");
-
+            tenPhong = "Screen 4";
             tvTenPhimChonGhe.setText(tenPhim);
             tvTenRapChonGhe.setText(tenRap);
             tvThongTinChieuChonGhe.setText(String.format("%s - %s %s ~ %s", tenPhong, ngayChieu, gioChieu, calculateEndTime(gioChieu)));

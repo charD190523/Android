@@ -14,5 +14,8 @@ import retrofit2.http.Query;
 public interface ShowtimeAPI {
     @GET("api/movie/find-all-by-date")
     Call<GeneralResponse<List<MovieShowDTO>>> getMovieShowtimes(@Query("showDate") LocalDate showDate);
+    @GET("api/movie/find-by-date")
+    Call<GeneralResponse<MovieShowDTO>> findByDate(@Query("movieId") Integer movieId,
+                                                     @Query("showDate") LocalDate showDate);
 
 }

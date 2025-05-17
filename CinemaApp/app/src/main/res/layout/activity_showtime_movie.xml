@@ -11,14 +11,14 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/phimCoverImageView"
+            android:id="@+id/movieCoverImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:src="@drawable/a_minecraft_movie" />
 
         <TextView
-            android:id="@+id/tenPhimTextView"
+            android:id="@+id/tenPhimText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -26,15 +26,15 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/diaChiRapTextView"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:paddingStart="16dp"-->
-        <!--            android:paddingEnd="16dp"-->
-        <!--            android:paddingBottom="16dp"-->
-        <!--            android:textSize="14sp"-->
-        <!--            android:textColor="#CCCCCC" />-->
+        <TextView
+            android:id="@+id/thoiLuongText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
+            android:textSize="14sp"
+            android:textColor="#CCCCCC" />
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:paddingBottom="8dp">
 
             <LinearLayout
-                android:id="@+id/ngayChieuLinearLayout"
+                android:id="@+id/ngayChieuLinearLayout1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -52,7 +52,7 @@
 
         </HorizontalScrollView>
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+            android:id="@+id/tabLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#000000"
@@ -65,7 +65,7 @@
             android:layout_below="@id/toolbar" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
+            android:id="@+id/viewPager1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -74,12 +74,13 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/btnBackLichChieu"
+        android:id="@+id/btnBackLichChieu1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_back"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        app:tint="@android:color/white"
         android:padding="8dp"
         android:clickable="true"
         android:focusable="true"

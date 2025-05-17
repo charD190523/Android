@@ -27,7 +27,7 @@
         </activity>
         <activity android:name=".activity.MovieDetailActivity" />
         <activity android:name=".UserInfor.DetailsActivity" />
-        <activity android:name=".activity.ShowtimeMovieActivity" />
+        <activity android:name=".Schedule.ShowtimeHomeActivity" />
         <activity android:name=".fragment.UserInfoActivity" />
         <activity android:name=".UserInfor.RewardsActivity" />
         <activity android:name=".UserInfor.UpdateInfoActivity" />
