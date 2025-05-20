@@ -19,6 +19,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.cinemaapp.fragment.HomeFragment;
+import com.example.cinemaapp.fragment.RecruitmentFragment;
 import com.example.cinemaapp.fragment.ScheduleFragment;
 import com.example.cinemaapp.fragment.UserInfoActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -89,9 +90,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Xử lý chuyển fragment khi chọn trong menu bên trái nếu cần
-        drawerLayout.closeDrawer(GravityCompat.START);
+        int id = item.getItemId();
+
+        if (id == R.id.drawer_home) {
+            replaceFragment(new HomeFragment());
+        } else if (id == R.id.drawer_schedule) {
+            replaceFragment(new ScheduleFragment());
+        } else if (id == R.id.drawer_store) {
+//            replaceFragment(new StoreFragment());
+        }else if (id == R.id.drawer_recruit){
+            replaceFragment(new RecruitmentFragment());
+        }
+        else if (id == R.id.drawer_profile) {
+            Intent intent = new Intent(this, UserInfoActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Tính năng chưa được hỗ trợ", Toast.LENGTH_SHORT).show();
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START); // Đóng Navigation Drawer
         return true;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
     public void onBackPressed() {

@@ -3,6 +3,7 @@ package com.example.cinemaapp.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cinemaapp.MainActivity;
 import com.example.cinemaapp.R;
 import com.example.cinemaapp.UserInfor.ChangePasswordActivity;
-import com.example.cinemaapp.UserInfor.DetailsActivity;
 import com.example.cinemaapp.UserInfor.LogoutActivity;
 import com.example.cinemaapp.UserInfor.MenuAdapter;
 import com.example.cinemaapp.UserInfor.MenuItem;
@@ -25,7 +25,10 @@ import com.example.cinemaapp.UserInfor.RewardsActivity;
 import com.example.cinemaapp.UserInfor.TransactionHistoryActivity;
 import com.example.cinemaapp.UserInfor.UpdateInfoActivity;
 import com.example.cinemaapp.api.AuthAPI;
+import com.example.cinemaapp.api.InvoiceAPI;
 import com.example.cinemaapp.client.APIClient;
+import com.example.cinemaapp.dto.InvoiceCommonDTO;
+import com.example.cinemaapp.dto.InvoiceCommonObject;
 import com.example.cinemaapp.dto.UpdateInforDTO;
 import com.example.cinemaapp.factory.GeneralResponse;
 
@@ -85,10 +88,10 @@ public class UserInfoActivity extends AppCompatActivity {
             public void onItemClick(MenuItem item) {
                 // Navigate to the appropriate activity based on the item title
                 switch (item.getTitle()) {
-                    case "Chi tiết":
-
-                        startActivity(new Intent(UserInfoActivity.this, DetailsActivity.class));
-                        break;
+//                    case "Chi tiết":
+//
+//                        startActivity(new Intent(UserInfoActivity.this, DetailsActivity.class));
+//                        break;
                     case "Phần thưởng":
                         startActivity(new Intent(UserInfoActivity.this, RewardsActivity.class));
                         break;
@@ -99,7 +102,7 @@ public class UserInfoActivity extends AppCompatActivity {
                         startActivity(new Intent(UserInfoActivity.this, ChangePasswordActivity.class));
                         break;
                     case "Lịch sử thanh toán":
-                        startActivity(new Intent(UserInfoActivity.this, TransactionHistoryActivity.class));
+                        getAllCommonInvoice();
                         break;
                     case "Đăng xuất":
 
@@ -131,6 +134,30 @@ public class UserInfoActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void getAllCommonInvoice() {
+        InvoiceAPI apiService = APIClient.getClient().create(InvoiceAPI.class);
+        apiService.getInvoice().enqueue(new retrofit2.Callback<GeneralResponse<List<InvoiceCommonDTO>>>() {
+
+            @Override
+            public void onResponse(Call<GeneralResponse<List<InvoiceCommonDTO>>> call, Response<GeneralResponse<List<InvoiceCommonDTO>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    InvoiceCommonObject invoiceCommonObject = new InvoiceCommonObject();
+                    invoiceCommonObject.setInvoiceCommonDTOList(response.body().getData());
+                    Intent intent = new Intent(UserInfoActivity.this, TransactionHistoryActivity.class);
+                    intent.putExtra("invoiceCommonObject", invoiceCommonObject);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(UserInfoActivity.this, "Lỗi khi lấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GeneralResponse<List<InvoiceCommonDTO>>> call, Throwable t) {
+                Log.d("Error: ", t.getMessage());
+                Toast.makeText(UserInfoActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });}
     private void fetchUserInfo() {
         AuthAPI apiService = APIClient.getClient().create(AuthAPI.class);
         apiService.getInfor().enqueue(new retrofit2.Callback<GeneralResponse<UpdateInforDTO>>() {

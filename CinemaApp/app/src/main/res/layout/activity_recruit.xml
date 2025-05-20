@@ -1,0 +1,92 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/recruitment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thông tin ứng tuyển"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="16dp" />
+        <!-- Họ và tên -->
+        <EditText
+            android:id="@+id/full_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Họ và tên"
+            android:inputType="textPersonName"
+            android:paddingBottom="16dp" />
+
+        <!-- Số điện thoại -->
+        <EditText
+            android:id="@+id/phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Số điện thoại"
+            android:inputType="phone"
+            android:paddingBottom="16dp" />
+
+        <!-- Email -->
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:paddingBottom="16dp" />
+
+        <!-- Vị trí ứng tuyển -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn vị trí ứng tuyển:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/position_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/position_ticket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nhân viên bán vé" />
+
+            <RadioButton
+                android:id="@+id/position_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nhân viên phục vụ" />
+
+            <RadioButton
+                android:id="@+id/position_technical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nhân viên kỹ thuật" />
+        </RadioGroup>
+
+        <!-- Nút gửi -->
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gửi đơn"
+            android:backgroundTint="@color/material_dynamic_primary30"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</ScrollView>

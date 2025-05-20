@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="4dp"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/black">
+
+        <!-- Dòng 1: 2D + Tên phim -->
+        <TextView
+            android:id="@+id/tvMovieTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2D Avengers: Endgame"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF" />
+
+        <!-- Dòng 2: Ngày + Giờ + Giá -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvDateTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="20/05/2025 - 19:00"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="150.000đ"
+                android:textStyle="bold"
+                android:textColor="#FF5722" />
+        </LinearLayout>
+
+        <!-- Dòng 3: Tên rạp -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:id="@+id/tvRap"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="BHD Star Garden"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
